@@ -6,7 +6,7 @@ public class SpiderMovement : MonoBehaviour
     [SerializeField] private float _rotationSpeed = 6f;
     [SerializeField] private float _moveSpeed = 6f;
 
-    [SerializeField] private CharacterController _characterController;
+    [SerializeField] private MyCharacterController _characterController;
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private Animator _animator;
@@ -20,11 +20,11 @@ public class SpiderMovement : MonoBehaviour
             Vector3 cameraEuler = Quaternion.Euler(0, _cameraTransform.eulerAngles.y, 0) * new Vector3(_inputReader._moveComposite.x, 0, _inputReader._moveComposite.y);
             Vector3 movementDirection = cameraEuler.normalized;
 
-            Quaternion desiredRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+            Quaternion desiredRotation = Quaternion.LookRotation(movementDirection, transform.up);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, _rotationSpeed * Time.deltaTime);
 
-            _characterController.Move(movementDirection * GetSpeed() * Time.deltaTime);
+            _characterController.Move(movementDirection * GetSpeed()/* * Time.deltaTime*/);
         }
 
         _animator.SetFloat(_movementHash, GetAnimationSpeed(), 0.75f, 0.2f);

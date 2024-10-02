@@ -10,6 +10,8 @@ public class WallDetection : MonoBehaviour
     [SerializeField] private MonoBehaviour _simpleMovement;
     [SerializeField] private MonoBehaviour _wallMovement;
 
+    private bool _onWall => _wallMovement.enabled;
+
     private void Start()
     {
         _inputReader.onJumpPerformed += CheckWall;
@@ -29,6 +31,19 @@ public class WallDetection : MonoBehaviour
             _model.up = hit.normal;
             _simpleMovement.enabled = false;
             _wallMovement.enabled = true;
+        }
+    }
+
+
+    private void Update()
+    {
+        if (_onWall)
+        {
+            var dir = transform.TransformDirection(new Vector3(0, -1, 0));
+            if (Physics.Raycast(transform.position, dir, 1, _mask) == false)
+            {
+                ReleaseWall();
+            }
         }
     }
 
