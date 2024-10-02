@@ -27,29 +27,47 @@ public class WallMovement : MonoBehaviour
 
     void Update()
     {
-        var dir = transform.TransformDirection(new Vector3(0, -1, 0));
-        Debug.DrawRay(transform.position - dir * 0.5f, dir, Color.red);
-        Physics.Raycast(transform.position, dir, out var hit, 1, _mask);
+        var downDir = -transform.up;//transform.TransformDirection(new Vector3(0, -1, 0));
 
-        transform.up = hit.normal;
+        Debug.DrawRay(transform.position - downDir * 0.5f, downDir, Color.red);
 
-        Vector3 cameraPlane = (transform.TransformDirection(Vector3.right) * _inputReader._moveComposite.x + transform.TransformDirection(Vector3.forward) * _inputReader._moveComposite.y);
+        Physics.Raycast(transform.position, downDir, out var hit, 1, _mask);
+
+        //transform.up = hit.normal;
+        transform.position = hit.point + transform.TransformDirection(new Vector3(0, 0.1f, 0));
+
+        Debug.Log(hit.normal);
+        Debug.DrawRay(hit.point, hit.normal, Color.yellow);
+        Vector3 wallPlane = (transform.forward * _inputReader._moveComposite.y + transform.right * _inputReader._moveComposite.x);
+        //Vector3 wallPlane = (transform.TransformDirection(Vector3.forward) * _inputReader._moveComposite.y + transform.TransformDirection(Vector3.right) * _inputReader._moveComposite.x);
+        wallPlane.Normalize();
+
+        Vector3 cameraPlane = (wallPlane.x * _cameraTransform.right + wallPlane.y * _cameraTransform.up + wallPlane.z * _cameraTransform.forward);
         cameraPlane.Normalize();
 
-        Vector3 cameraEuler = Quaternion.Euler(hit.normal.x, hit.normal.y, hit.normal.z) * new Vector3(_inputReader._moveComposite.x, 0, _inputReader._moveComposite.y);
-        Vector3 movementDirection = cameraEuler.normalized;
+        var upDir = transform.TransformDirection(new Vector3(0, 1, 0));
 
-        Debug.DrawRay(transform.position + hit.normal * 0.5f, cameraPlane, Color.blue);
+        //Vector3 testDirection = Quaternion.FromToRotation(_cameraTransform.up, Vector3.up) *
+         //   _cameraTransform.TransformDirection(new Vector3(_inputReader._moveComposite.x, 0, _inputReader._moveComposite.y));
 
-        Quaternion desiredRotation = Quaternion.LookRotation(movementDirection, hit.normal);
+        Debug.DrawRay(transform.position + upDir * 0.5f, wallPlane, Color.blue);
 
-        //transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, _rotationSpeed * Time.deltaTime);
+        var forward = transform.TransformDirection(new Vector3(0, 0, 1));
+
         if (_inputReader._movementInputDetected)
         {
-            _characterController.Move(cameraPlane * GetSpeed()/* * Time.deltaTime*/);
-        }
+            //Quaternion lookRotation = Quaternion.LookRotation(forward, hit.normal);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, _rotationSpeed * Time.deltaTime);
 
-        //_animator.SetFloat(_movementHash, GetAnimationSpeed(), 0.75f, 0.2f);
+            //transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+
+            Quaternion desiredRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;//Quaternion.LookRotation(wallPlane, transform.up);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, _rotationSpeed * Time.deltaTime);
+
+            _characterController.Move(wallPlane * GetSpeed());
+        }
+        _animator.SetFloat(_movementHash, GetAnimationSpeed(), 0.75f, 0.2f);
     }
 
     private float GetAnimationSpeed()

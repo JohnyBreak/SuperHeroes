@@ -26,9 +26,21 @@ public class WallDetection : MonoBehaviour
 
     private void CheckWall() 
     {
-        if (Physics.Raycast(transform.position, transform.forward, out var hit, 1, _mask)) 
+        var upDir = transform.TransformDirection(new Vector3(0, 1, 0));
+        if (Physics.Raycast(transform.position + upDir, transform.forward, out var hit, 1, _mask)) 
         {
-            _model.up = hit.normal;
+            //_model.up = hit.normal;
+            transform.forward = -hit.normal;
+            transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+
+            //var forward = transform.TransformDirection(new Vector3(0, 0, 1));
+
+            //Quaternion lookRotation = Quaternion.LookRotation(forward, hit.normal);
+
+            //_model.localRotation = Quaternion.LookRotation(forward, hit.normal);//Quaternion.Lerp(transform.rotation, lookRotation, 7 * Time.deltaTime);
+
+            _model.position = hit.point + transform.TransformDirection(new Vector3(0, 0.1f, 0));
+
             _simpleMovement.enabled = false;
             _wallMovement.enabled = true;
         }
