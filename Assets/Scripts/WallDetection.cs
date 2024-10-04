@@ -47,17 +47,17 @@ public class WallDetection : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        if (_onWall)
-        {
-            var dir = transform.TransformDirection(new Vector3(0, -1, 0));
-            if (Physics.Raycast(transform.position, dir, 1, _mask) == false)
-            {
-                ReleaseWall();
-            }
-        }
-    }
+    //private void Update()
+    //{
+    //    if (_onWall)
+    //    {
+    //        var dir = transform.TransformDirection(new Vector3(0, -1, 0));
+    //        if (Physics.Raycast(transform.position, dir, 1, _mask) == false)
+    //        {
+    //            ReleaseWall();
+    //        }
+    //    }
+    //}
 
     private void ReleaseWall()
     {

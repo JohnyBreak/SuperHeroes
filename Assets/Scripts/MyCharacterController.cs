@@ -156,24 +156,24 @@ public class MyCharacterController : MonoBehaviour
 
     [SerializeField] private bool _drawGizmos;
 
-    private void OnDrawGizmosSelected()
-    {
-        if (!_drawGizmos) return;
+    //private void OnDrawGizmosSelected()
+    //{
+    //    if (!_drawGizmos) return;
 
-        Gizmos.color = new Color(1, 1, 0, 0.75F);
-        Gizmos.DrawWireSphere(transform.TransformPoint(_groundCheckPoint), _checkCollisionRadius);
-        //Gizmos.DrawWireCube(transform.TransformPoint(_groundCheckPoint), new Vector3(_checkSphereRadius + 0.2f, _checkSphereRadius + 0.2f, _checkSphereRadius + 0.2f));
-        Gizmos.color = Color.black;
-        Gizmos.DrawWireSphere((transform.position + _liftPoint) + ((-transform.up) * _currentSphereCastDistance), _checkSphereRadius);
-        // Gizmos.DrawWireCube(transform.TransformPoint(_groundCheckPoint), new Vector3(_checkSphereRadius, _checkSphereRadius, _checkSphereRadius));
-        Debug.DrawRay(transform.position, -transform.up * 2f, Color.red);
+    //    Gizmos.color = new Color(1, 1, 0, 0.75F);
+    //    Gizmos.DrawWireSphere(transform.TransformPoint(_groundCheckPoint), _checkCollisionRadius);
+    //    //Gizmos.DrawWireCube(transform.TransformPoint(_groundCheckPoint), new Vector3(_checkSphereRadius + 0.2f, _checkSphereRadius + 0.2f, _checkSphereRadius + 0.2f));
+    //    Gizmos.color = Color.black;
+    //    Gizmos.DrawWireSphere((transform.position + _liftPoint) + ((-transform.up) * _currentSphereCastDistance), _checkSphereRadius);
+    //    // Gizmos.DrawWireCube(transform.TransformPoint(_groundCheckPoint), new Vector3(_checkSphereRadius, _checkSphereRadius, _checkSphereRadius));
+    //    Debug.DrawRay(transform.position, -transform.up * 2f, Color.red);
 
-        Gizmos.color = Color.blue;
-        Vector3 p0 = new Vector3(_playerCollider.center.x, (_playerCollider.center.y + (_playerCollider.height / 2)) - _playerCollider.radius, _playerCollider.center.z);
+    //    Gizmos.color = Color.blue;
+    //    Vector3 p0 = new Vector3(_playerCollider.center.x, (_playerCollider.center.y + (_playerCollider.height / 2)) - _playerCollider.radius, _playerCollider.center.z);
 
-        Vector3 p1 = new Vector3(_playerCollider.center.x, (_playerCollider.center.y - (_playerCollider.height / 2)) + _playerCollider.radius, _playerCollider.center.z);
-        Gizmos.DrawWireSphere(transform.TransformPoint(p0), _playerCollider.radius);
-        Gizmos.DrawWireSphere(transform.TransformPoint(p1), _playerCollider.radius);
+    //    Vector3 p1 = new Vector3(_playerCollider.center.x, (_playerCollider.center.y - (_playerCollider.height / 2)) + _playerCollider.radius, _playerCollider.center.z);
+    //    Gizmos.DrawWireSphere(transform.TransformPoint(p0), _playerCollider.radius);
+    //    Gizmos.DrawWireSphere(transform.TransformPoint(p1), _playerCollider.radius);
 
-    }
+    //}
 }

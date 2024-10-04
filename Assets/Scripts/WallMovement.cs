@@ -27,47 +27,62 @@ public class WallMovement : MonoBehaviour
 
     void Update()
     {
-        var downDir = -transform.up;//transform.TransformDirection(new Vector3(0, -1, 0));
+        var downDir = -transform.up;
 
         Debug.DrawRay(transform.position - downDir * 0.5f, downDir, Color.red);
 
-        Physics.Raycast(transform.position, downDir, out var hit, 1, _mask);
+        Physics.Raycast(transform.position - downDir * 0.5f, downDir, out var hit, 1, _mask);
 
-        //transform.up = hit.normal;
         transform.position = hit.point + transform.TransformDirection(new Vector3(0, 0.1f, 0));
 
-        Debug.Log(hit.normal);
-        Debug.DrawRay(hit.point, hit.normal, Color.yellow);
-        Vector3 wallPlane = (transform.forward * _inputReader._moveComposite.y + transform.right * _inputReader._moveComposite.x);
-        //Vector3 wallPlane = (transform.TransformDirection(Vector3.forward) * _inputReader._moveComposite.y + transform.TransformDirection(Vector3.right) * _inputReader._moveComposite.x);
-        wallPlane.Normalize();
+        var forward = _cameraTransform.forward.normalized;
+        var right = _cameraTransform.right.normalized; 
 
-        Vector3 cameraPlane = (wallPlane.x * _cameraTransform.right + wallPlane.y * _cameraTransform.up + wallPlane.z * _cameraTransform.forward);
-        cameraPlane.Normalize();
+        //var forward = _cameraTransform.InverseTransformVector(_cameraTransform.forward).normalized;
+        //var right = _cameraTransform.InverseTransformVector(_cameraTransform.right).normalized;
 
         var upDir = transform.TransformDirection(new Vector3(0, 1, 0));
+        
+        //forward.y = 0;
+        //right.y = 0;
 
-        //Vector3 testDirection = Quaternion.FromToRotation(_cameraTransform.up, Vector3.up) *
-         //   _cameraTransform.TransformDirection(new Vector3(_inputReader._moveComposite.x, 0, _inputReader._moveComposite.y));
+        forward = Project(forward.normalized, hit.normal).normalized;
+        right = right.normalized;
+        
+        Debug.DrawRay(transform.position + upDir * 0.5f, forward, Color.blue);
+        Debug.DrawRay(transform.position + upDir * 0.5f, right, Color.red);
 
-        Debug.DrawRay(transform.position + upDir * 0.5f, wallPlane, Color.blue);
+        
+        var camForward = _inputReader._moveComposite.y * forward;
+        var camRight = _inputReader._moveComposite.x * right;
 
-        var forward = transform.TransformDirection(new Vector3(0, 0, 1));
+        
+        var camRelativeDirection = camForward + camRight;
 
-        if (_inputReader._movementInputDetected)
+        Debug.DrawRay(transform.position + upDir * 0.5f, camRelativeDirection, Color.black);
+
+        Quaternion desiredRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.localRotation;
+
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, desiredRotation, _rotationSpeed * Time.deltaTime);
+
+
+        if (_inputReader._moveComposite.sqrMagnitude > 0)
         {
-            //Quaternion lookRotation = Quaternion.LookRotation(forward, hit.normal);
+
+            Vector3 cameraEuler = Quaternion.Euler(0, _cameraTransform.eulerAngles.y, 0) * new Vector3(_inputReader._moveComposite.x, 0, _inputReader._moveComposite.y);
+            Vector3 movementDirection = cameraEuler.normalized;
+
+            //Quaternion lookRotation = Quaternion.LookRotation(movementDirection, hit.normal);
             //transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, _rotationSpeed * Time.deltaTime);
 
-            //transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
-
-            Quaternion desiredRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;//Quaternion.LookRotation(wallPlane, transform.up);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, _rotationSpeed * Time.deltaTime);
-
-            _characterController.Move(wallPlane * GetSpeed());
+            _characterController.Move(camRelativeDirection * GetSpeed());
         }
         _animator.SetFloat(_movementHash, GetAnimationSpeed(), 0.75f, 0.2f);
+    }
+
+    private Vector3 Project(Vector3 forward, Vector3 normal) 
+    {
+        return forward - Vector3.Dot(forward, normal) * normal;
     }
 
     private float GetAnimationSpeed()
