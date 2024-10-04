@@ -11,6 +11,8 @@ public class SpiderMovement : MonoBehaviour
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private Animator _animator;
 
+    [SerializeField] private Transform _model;
+
     private int _movementHash = Animator.StringToHash("MovementSpeed");
 
     void Update()
@@ -22,9 +24,9 @@ public class SpiderMovement : MonoBehaviour
 
             Quaternion desiredRotation = Quaternion.LookRotation(movementDirection, transform.up);
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, _rotationSpeed * Time.deltaTime);
+            _model.rotation = Quaternion.Slerp(_model.rotation, desiredRotation, _rotationSpeed * Time.deltaTime);
 
-            _characterController.Move(movementDirection * GetSpeed()/* * Time.deltaTime*/);
+            _characterController.Move(movementDirection * GetSpeed());
         }
 
         _animator.SetFloat(_movementHash, GetAnimationSpeed(), 0.75f, 0.2f);

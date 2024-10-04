@@ -1008,7 +1008,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 844133685}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.011426323, y: 5.5697974e-10, z: 6.3646454e-12, w: 0.99993473}
+  m_LocalRotation: {x: -0.011426322, y: -5.376245e-10, z: -6.143471e-12, w: 0.99993473}
   m_LocalPosition: {x: 0, y: 2, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1119,7 +1119,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 914462210}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.011426323, y: 5.5697974e-10, z: 6.3646454e-12, w: 0.99993473}
+  m_LocalRotation: {x: -0.011426322, y: -5.376245e-10, z: -6.143471e-12, w: 0.99993473}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2161,7 +2161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565012532}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.011426323, y: 5.5697974e-10, z: 6.3646454e-12, w: 0.99993473}
+  m_LocalRotation: {x: -0.011426322, y: -5.376245e-10, z: -6.143471e-12, w: 0.99993473}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2520,7 +2520,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756753190}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.011426322, y: -5.385454e-12, z: -6.149578e-14, w: 0.99993473}
+  m_LocalRotation: {x: -0.011426323, y: -6.2224925e-10, z: -7.110485e-12, w: 0.99993473}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3090,6 +3090,7 @@ MonoBehaviour:
   _inputReader: {fileID: 7790563198181469439}
   _cameraTransform: {fileID: 844133688}
   _animator: {fileID: 631669751}
+  _model: {fileID: 631669752}
 --- !u!114 &7790563198181469443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3111,6 +3112,7 @@ MonoBehaviour:
   _rotationSpeed: 7
   _moveSpeed: 6
   _inputReader: {fileID: 7790563198181469439}
+  _model: {fileID: 631669752}
 --- !u!114 &7790563198181469444
 MonoBehaviour:
   m_ObjectHideFlags: 0

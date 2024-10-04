@@ -12,6 +12,8 @@ public class WallMovement : MonoBehaviour
     [SerializeField] private float _moveSpeed = 6f;
     [SerializeField] private InputReader _inputReader;
 
+    [SerializeField] private Transform _model;
+
     private int _crouchtHash = Animator.StringToHash("IsCrouching");
     private int _movementHash = Animator.StringToHash("MovementSpeed");
 
@@ -38,13 +40,7 @@ public class WallMovement : MonoBehaviour
         var forward = _cameraTransform.forward.normalized;
         var right = _cameraTransform.right.normalized; 
 
-        //var forward = _cameraTransform.InverseTransformVector(_cameraTransform.forward).normalized;
-        //var right = _cameraTransform.InverseTransformVector(_cameraTransform.right).normalized;
-
         var upDir = transform.TransformDirection(new Vector3(0, 1, 0));
-        
-        //forward.y = 0;
-        //right.y = 0;
 
         forward = Project(forward.normalized, hit.normal).normalized;
         right = right.normalized;
@@ -68,12 +64,9 @@ public class WallMovement : MonoBehaviour
 
         if (_inputReader._moveComposite.sqrMagnitude > 0)
         {
+            Quaternion moveRotation = Quaternion.LookRotation(camRelativeDirection, transform.up);
 
-            Vector3 cameraEuler = Quaternion.Euler(0, _cameraTransform.eulerAngles.y, 0) * new Vector3(_inputReader._moveComposite.x, 0, _inputReader._moveComposite.y);
-            Vector3 movementDirection = cameraEuler.normalized;
-
-            //Quaternion lookRotation = Quaternion.LookRotation(movementDirection, hit.normal);
-            //transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, _rotationSpeed * Time.deltaTime);
+            _model.rotation = Quaternion.Lerp(_model.rotation, moveRotation, _rotationSpeed * Time.deltaTime);
 
             _characterController.Move(camRelativeDirection * GetSpeed());
         }
