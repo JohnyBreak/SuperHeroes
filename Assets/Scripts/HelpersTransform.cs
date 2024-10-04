@@ -12,6 +12,7 @@ public class HelpersTransform : MonoBehaviour
     {
         _movingT.position = _targetT.position;
 
-        _upT.localRotation = _targetUpT.localRotation;// Quaternion.Lerp(_upT.localRotation, _targetUpT.localRotation, 6f * Time.deltaTime);
+        //_upT.localRotation = _targetUpT.localRotation;
+        _upT.localRotation = Quaternion.Lerp(_upT.localRotation, _targetUpT.localRotation, 4f * Time.deltaTime);
     }
 }
