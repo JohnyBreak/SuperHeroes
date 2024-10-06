@@ -31,7 +31,7 @@ public class WallMovement : MonoBehaviour
     {
         var downDir = -transform.up;
 
-        Debug.DrawRay(transform.position - downDir * 0.5f, downDir, Color.red);
+        //Debug.DrawRay(transform.position - downDir * 0.5f, downDir, Color.red);
 
         Physics.Raycast(transform.position - downDir * 0.5f, downDir, out var hit, 1, _mask);
 
@@ -45,8 +45,8 @@ public class WallMovement : MonoBehaviour
         forward = Project(forward.normalized, hit.normal).normalized;
         right = right.normalized;
         
-        Debug.DrawRay(transform.position + upDir * 0.5f, forward, Color.blue);
-        Debug.DrawRay(transform.position + upDir * 0.5f, right, Color.red);
+        //Debug.DrawRay(transform.position + upDir * 0.5f, forward, Color.blue);
+        //Debug.DrawRay(transform.position + upDir * 0.5f, right, Color.red);
 
         
         var camForward = _inputReader._moveComposite.y * forward;
@@ -55,11 +55,11 @@ public class WallMovement : MonoBehaviour
         
         var camRelativeDirection = camForward + camRight;
 
-        Debug.DrawRay(transform.position + upDir * 0.5f, camRelativeDirection, Color.black);
+        //Debug.DrawRay(transform.position + upDir * 0.5f, camRelativeDirection, Color.black);
 
         Quaternion desiredRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.localRotation;
 
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, desiredRotation, _rotationSpeed * Time.deltaTime);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, desiredRotation, _rotationSpeed * 2 * Time.deltaTime);
 
 
         if (_inputReader._moveComposite.sqrMagnitude > 0)
