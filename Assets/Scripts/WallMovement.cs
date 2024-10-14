@@ -29,46 +29,48 @@ public class WallMovement : MonoBehaviour
 
     void Update()
     {
+
+        var upDir = transform.up;
         var downDir = -transform.up;
 
-        //Debug.DrawRay(transform.position - downDir * 0.5f, downDir, Color.red);
+        Debug.DrawRay(transform.position + downDir * 0.5f, downDir, Color.red);
 
-        Physics.Raycast(transform.position - downDir * 0.5f, downDir, out var hit, 1, _mask);
-
-        transform.position = hit.point + transform.TransformDirection(new Vector3(0, 0.1f, 0));
-
-        var forward = _cameraTransform.forward.normalized;
-        var right = _cameraTransform.right.normalized; 
-
-        var upDir = transform.TransformDirection(new Vector3(0, 1, 0));
-
-        forward = Project(forward.normalized, hit.normal).normalized;
-        right = right.normalized;
-        
-        //Debug.DrawRay(transform.position + upDir * 0.5f, forward, Color.blue);
-        //Debug.DrawRay(transform.position + upDir * 0.5f, right, Color.red);
-
-        
-        var camForward = _inputReader._moveComposite.y * forward;
-        var camRight = _inputReader._moveComposite.x * right;
-
-        
-        var camRelativeDirection = camForward + camRight;
-
-        //Debug.DrawRay(transform.position + upDir * 0.5f, camRelativeDirection, Color.black);
-
-        Quaternion desiredRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.localRotation;
-
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, desiredRotation, _rotationSpeed * 2 * Time.deltaTime);
-
-
-        if (_inputReader._moveComposite.sqrMagnitude > 0)
+        if (Physics.Raycast(transform.position + downDir * 0.5f, downDir, out var hit, 1, _mask)) 
         {
-            Quaternion moveRotation = Quaternion.LookRotation(camRelativeDirection, transform.up);
+            transform.position = hit.point + transform.TransformDirection(new Vector3(0, 1f, 0));
 
-            _model.rotation = Quaternion.Lerp(_model.rotation, moveRotation, _rotationSpeed * Time.deltaTime);
+            var forward = _cameraTransform.forward.normalized;
+            var right = _cameraTransform.right.normalized; 
 
-            _characterController.Move(camRelativeDirection * GetSpeed());
+            //var upDir = transform.TransformDirection(new Vector3(0, 1, 0));
+
+            forward = Project(forward.normalized, hit.normal).normalized;
+            right = right.normalized;
+        
+            Debug.DrawRay(transform.position, forward, Color.blue);
+            Debug.DrawRay(transform.position, right, Color.red);
+
+        
+            var camForward = _inputReader._moveComposite.y * forward;
+            var camRight = _inputReader._moveComposite.x * right;
+
+        
+            var camRelativeDirection = camForward + camRight;
+
+            Debug.DrawRay(transform.position, camRelativeDirection, Color.black);
+
+            Quaternion desiredRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.localRotation;
+
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, desiredRotation, _rotationSpeed * 2 * Time.deltaTime);
+
+            if (_inputReader._moveComposite.sqrMagnitude > 0)
+            {
+                Quaternion moveRotation = Quaternion.LookRotation(camRelativeDirection, transform.up);
+
+                _model.rotation = Quaternion.Lerp(_model.rotation, moveRotation, _rotationSpeed * Time.deltaTime);
+
+                _characterController.Move(camRelativeDirection * GetSpeed());
+            }
         }
         _animator.SetFloat(_movementHash, GetAnimationSpeed(), 0.75f, 0.2f);
     }

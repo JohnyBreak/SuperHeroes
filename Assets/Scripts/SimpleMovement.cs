@@ -1,7 +1,7 @@
 using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
 
-public class SpiderMovement : MonoBehaviour
+public class SimpleMovement : MonoBehaviour
 {
     [SerializeField] private float _rotationSpeed = 6f;
     [SerializeField] private float _moveSpeed = 6f;

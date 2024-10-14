@@ -17,7 +17,7 @@ public class ZeroSetter : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl)) 
         {
-            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 1.2f, transform.position.z);
         }
     }
 }
