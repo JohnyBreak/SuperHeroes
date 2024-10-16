@@ -23,6 +23,12 @@ public class PlayerPivot : MonoBehaviour
         UpdatePivot();
     }
 
+    public void SetPivotValues(Vector3 pos) 
+    {
+        pivot.position = pos;
+        UpdatePivot();
+    }
+
     void UpdatePivot()
     {
         List<(Vector3 pos, Quaternion rot, float weight)> points = scan.Points();

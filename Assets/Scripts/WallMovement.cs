@@ -13,7 +13,7 @@ public class WallMovement : MonoBehaviour
     [SerializeField] private InputReader _inputReader;
 
     [SerializeField] private Transform _model;
-    //[SerializeField] private Transform _playerPivot;
+    [SerializeField] private Transform _playerPivot;
 
     private int _crouchtHash = Animator.StringToHash("IsCrouching");
     private int _movementHash = Animator.StringToHash("MovementSpeed");
@@ -35,8 +35,8 @@ public class WallMovement : MonoBehaviour
 
     void Update()
     {
-        var downDir = -transform.up;
-        var forwardDir = _model.TransformDirection(new Vector3(0, 0, 1));
+        var downDir = transform.TransformDirection(new Vector3(0, -1f, 0));
+        //var forwardDir = _model.TransformDirection(new Vector3(0, 0, 1));
 
 
         //Debug.DrawRay(transform.position + downDir * 0.8f + forwardDir * 0.6f, forwardDir * 0.6f, Color.green);
@@ -50,15 +50,15 @@ public class WallMovement : MonoBehaviour
 
         var upDir = transform.TransformDirection(new Vector3(0, 1f, 0));
 
-        Debug.DrawRay(transform.position, -upDir, Color.red);
-        Physics.Raycast(transform.position, -upDir, out var hit, 1, _mask);
+        Debug.DrawRay(transform.position + upDir * 0.5f, downDir, Color.red);
+        Physics.Raycast(transform.position + upDir * 0.5f, downDir, out var hit, 1, _mask);
 
-         transform.position = hit.point + transform.TransformDirection(new Vector3(0, 0.05f, 0));
+        transform.position = hit.point + transform.TransformDirection(new Vector3(0, 0.05f, 0));
 
         var forward = _cameraTransform.forward.normalized;
         var right = _cameraTransform.right.normalized;
 
-        forward = Project(forward.normalized, hit.normal).normalized;
+        forward = Project(forward.normalized, _playerPivot.up/* hit.normal*/).normalized;
         right = right.normalized;
 
         //Debug.DrawRay(transform.position, forward, Color.blue);
@@ -73,7 +73,7 @@ public class WallMovement : MonoBehaviour
 
         Debug.DrawRay(transform.position, camRelativeDirection, Color.black);
 
-        Quaternion desiredRotation = Quaternion.FromToRotation(transform.up, hit.normal/* _playerPivot.up;*/) * transform.localRotation;
+        Quaternion desiredRotation = Quaternion.FromToRotation(transform.up, /*hit.normal*/ _playerPivot.up) * transform.localRotation;
 
         transform.localRotation = Quaternion.Lerp(transform.localRotation, desiredRotation, _rotationSpeed * 2 * Time.deltaTime);
 

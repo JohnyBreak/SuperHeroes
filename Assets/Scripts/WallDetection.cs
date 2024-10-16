@@ -11,6 +11,8 @@ public class WallDetection : MonoBehaviour
     [SerializeField] private MonoBehaviour _wallMovement;
     [SerializeField] private MonoBehaviour _gravity;
     [SerializeField] private MyCharacterController _ctrl;
+    [SerializeField] private PlayerPivot _playerPivot;
+
     private bool _onWall => _wallMovement.enabled;
 
     private void Start()
@@ -27,7 +29,9 @@ public class WallDetection : MonoBehaviour
 
     private void CheckWall() 
     {
-        if (Physics.Raycast(transform.position, _model.forward, out var hit, 1, _mask)) 
+        var upDir = _model.TransformDirection(new Vector3(0, 1f, 0));
+
+        if (Physics.Raycast(_model.position + upDir, _model.forward, out var hit, 1, _mask)) 
         {
             //_model.up = hit.normal;
             //transform.forward = -hit.normal;
@@ -39,9 +43,9 @@ public class WallDetection : MonoBehaviour
 
             //_model.localRotation = Quaternion.LookRotation(forward, hit.normal);//Quaternion.Lerp(transform.rotation, lookRotation, 7 * Time.deltaTime);
 
-            transform.position = hit.point + transform.TransformDirection(new Vector3(0, 0.05f, 0));
+            transform.position = hit.point + upDir * 0.05f;
 
-
+            _playerPivot.SetPivotValues(transform.position);
             ToggleWallMovement(true);
         }
     }
@@ -75,5 +79,6 @@ public class WallDetection : MonoBehaviour
         _wallMovement.enabled = wall;
         _gravity.enabled = !wall;
         _ctrl.ShouldSnapToGround = !wall;
+        _playerPivot.enabled = wall;
     }
 }
