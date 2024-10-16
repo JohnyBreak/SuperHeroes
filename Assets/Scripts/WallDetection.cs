@@ -39,7 +39,7 @@ public class WallDetection : MonoBehaviour
 
             //_model.localRotation = Quaternion.LookRotation(forward, hit.normal);//Quaternion.Lerp(transform.rotation, lookRotation, 7 * Time.deltaTime);
 
-            transform.position = hit.point + transform.TransformDirection(new Vector3(0, 1f, 0));
+            transform.position = hit.point + transform.TransformDirection(new Vector3(0, 0.05f, 0));
 
 
             ToggleWallMovement(true);

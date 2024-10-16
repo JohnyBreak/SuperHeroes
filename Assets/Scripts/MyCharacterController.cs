@@ -88,7 +88,7 @@ public class MyCharacterController : MonoBehaviour
 
     private void CheckGround()
     {
-        Ray ray = new Ray(transform.position, -transform.up);
+        Ray ray = new Ray(transform.position + transform.up, -transform.up);
 
         if (Physics.SphereCast(ray, _checkSphereRadius, out RaycastHit tempHit, 6, _discludePlayer))
         {
@@ -113,7 +113,7 @@ public class MyCharacterController : MonoBehaviour
                 _groundHit = tempHit;
                 if (ShouldSnapToGround)
                 {
-                    var newPos = new Vector3(transform.position.x, (_groundHit.point.y + _playerHeight / 2), transform.position.z);
+                    var newPos = new Vector3(transform.position.x, (_groundHit.point.y/* + _playerHeight / 2*/), transform.position.z);
 
                     if (!_smooth)
                     {
