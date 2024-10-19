@@ -42,16 +42,11 @@ public class CameraBehaviour : MonoBehaviour
         _horizontal.localRotation = Quaternion.Euler(0, _horizontalRotation, 0);
     }
 
-    private void Update()
-    {
-        
-    }
-
     void LateUpdate()
     {
-        HandleRotation();
         GetCameraCollision();
-
+        HandleRotation();
+        
         var up = _horizontal.TransformDirection(new Vector3(0, 1f, 0));
         _cameraT.LookAt(_lookAt, up);
     }
@@ -61,9 +56,10 @@ public class CameraBehaviour : MonoBehaviour
         _distance = 5;
         var toCamDir =_cameraT.position - _lookAt.position;
         toCamDir.Normalize();
-        if (Physics.SphereCast(_lookAt.position, _radius, toCamDir, out var hit, 5, _mask))
+
+        if (Physics.Raycast(_lookAt.position, toCamDir, out var hit, _distance, _mask)) 
         {
-            _distance = hit.distance;
+            _distance = hit.distance - 0.35f;
         }
 
         _cameraT.localPosition = Vector3.back * _distance;
