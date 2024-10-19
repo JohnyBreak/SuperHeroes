@@ -12,7 +12,7 @@ public class WallDetection : MonoBehaviour
     [SerializeField] private MonoBehaviour _gravity;
     [SerializeField] private MyCharacterController _ctrl;
     [SerializeField] private PlayerPivot _playerPivot;
-
+    [SerializeField] private CameraTargetPosition _targetPosition;
     private bool _onWall => _wallMovement.enabled;
 
     private void Start()
@@ -80,5 +80,6 @@ public class WallDetection : MonoBehaviour
         _gravity.enabled = !wall;
         _ctrl.ShouldSnapToGround = !wall;
         _playerPivot.enabled = wall;
+        _targetPosition.ToggleWallPosition(wall);
     }
 }

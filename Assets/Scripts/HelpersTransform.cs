@@ -7,13 +7,14 @@ public class HelpersTransform : MonoBehaviour
 
     [SerializeField] private Transform _movingT;
     [SerializeField] private Transform _targetT;
+    [SerializeField] private float _rotationSpeed = 1f;
 
     private void Update()
     {
         _movingT.position = _targetT.position;
 
-        //_upT.rotation = _targetUpT.rotation;
+        var step = _rotationSpeed * Time.deltaTime;
 
-        _upT.rotation = Quaternion.Lerp(_upT.rotation, _targetUpT.rotation, 6f * Time.deltaTime);
+        _upT.rotation = Quaternion.Lerp(_upT.rotation, _targetUpT.rotation, step);
     }
 }
