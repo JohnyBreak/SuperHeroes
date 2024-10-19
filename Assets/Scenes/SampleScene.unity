@@ -1118,8 +1118,6 @@ MonoBehaviour:
   _mask:
     serializedVersion: 2
     m_Bits: 320
-  _verticalRotation: 14
-  _horizontalRotation: 0
 --- !u!1 &914462210
 GameObject:
   m_ObjectHideFlags: 3

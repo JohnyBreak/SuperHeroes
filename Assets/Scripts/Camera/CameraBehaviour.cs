@@ -17,7 +17,6 @@ public class CameraBehaviour : MonoBehaviour
     private float _verticalRotation = 0;
     private float _horizontalRotation = 0;
     private float _distance = 5;
-    private Vector3 _up;
     
     private void HandleRotation()
     {
@@ -29,20 +28,32 @@ public class CameraBehaviour : MonoBehaviour
         _verticalRotation = Mathf.Clamp(_verticalRotation, _clamp.x, _clamp.y);
 
         _horizontalRotation += x;
+
+        if (_horizontalRotation > 360) 
+        {
+            _horizontalRotation -= 360; 
+        }
+        if (_horizontalRotation < 0)
+        {
+            _horizontalRotation = 360 + _horizontalRotation;
+        }
+
         _vertical.localRotation = Quaternion.Euler(_verticalRotation, 0, 0);
         _horizontal.localRotation = Quaternion.Euler(0, _horizontalRotation, 0);
     }
 
     private void Update()
     {
-        _up = _horizontal.TransformDirection(new Vector3(0, 1f, 0));
+        
     }
 
     void LateUpdate()
     {
         HandleRotation();
         GetCameraCollision();
-        _cameraT.LookAt(_lookAt, _up);
+
+        var up = _horizontal.TransformDirection(new Vector3(0, 1f, 0));
+        _cameraT.LookAt(_lookAt, up);
     }
 
     private void GetCameraCollision()
