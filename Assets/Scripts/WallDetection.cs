@@ -1,8 +1,6 @@
 using Synty.AnimationBaseLocomotion.Samples.InputSystem;
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 
 public class WallDetection : MonoBehaviour
 {
@@ -33,35 +31,23 @@ public class WallDetection : MonoBehaviour
         _inputReader.onCrouchActivated -= ReleaseWall;
     }
 
-    private void CheckWall() 
+    private void CheckWall()
     {
         var upDir = _model.TransformDirection(new Vector3(0, 1f, 0));
 
-        if (Physics.Raycast(_model.position + upDir, _model.forward, out var hit, 1, _mask)) 
+        if (Physics.Raycast(_model.position + upDir, _model.forward, out var hit, 1, _mask))
         {
-            //transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
-
-            //transform.position = hit.point + upDir * 0.05f;
             _model.forward = -hit.normal;
-            StartChange(true, hit.normal, hit.point, upDir);
-            
-            //ToggleWallMovement(true);
+
+            Quaternion targetRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+
+            StartChange(true, hit.point, targetRotation);
         }
     }
 
 
     private void Update()
     {
-        //var upDir = _model.TransformDirection(new Vector3(0, 1f, 0));
-        //var forward = _model.TransformDirection(new Vector3(0, 0, 1));
-        //if (Physics.Raycast(_model.position + upDir, forward + upDir, out var hit, 1, _mask))
-        //{
-        //    var projectedForward = Project(forward + upDir, hit.normal).normalized;
-        //    Debug.DrawRay(_model.position + upDir, forward + upDir, Color.black);
-        //    Debug.DrawRay(_model.position + upDir, projectedForward, Color.cyan);
-        //}
-        
-
         if (_onWall)
         {
             var dir = transform.TransformDirection(new Vector3(0, -1, 0));
@@ -85,21 +71,13 @@ public class WallDetection : MonoBehaviour
     {
         if (_wallMovement.enabled)
         {
-            //transform.up = Vector3.up;
             var upDir = transform.TransformDirection(new Vector3(0, 1, 0));
-            StartChange(false, Vector3.up, transform.position + upDir * 0.5f, upDir);
-            //ToggleWallMovement(false);
+            StartChange(false, transform.position + upDir * 0.5f, Quaternion.identity);
         }
     }
 
-    private void ToggleWallMovement(bool wall) 
+    private void ToggleWallMovement(bool wall)
     {
-        //_simpleMovement.enabled = !wall;
-        //_wallMovement.enabled = wall;
-        //_gravity.enabled = !wall;
-        //_ctrl.ShouldSnapToGround = !wall;
-        //_playerPivot.enabled = wall;
-        //_targetPosition.ToggleWallPosition(wall);
         ToggleWalkObjects(wall);
         ToggleWallObjects(wall);
     }
@@ -114,12 +92,11 @@ public class WallDetection : MonoBehaviour
 
     private void ToggleWallObjects(bool wall)
     {
-
         _wallMovement.enabled = wall;
         _playerPivot.enabled = wall;
         _targetPosition.ToggleWallPosition(wall);
     }
-    private void DisableAll() 
+    private void DisableAll()
     {
         _simpleMovement.enabled = false;
         _wallMovement.enabled = false;
@@ -129,13 +106,14 @@ public class WallDetection : MonoBehaviour
         _targetPosition.ToggleWallPosition(false);
     }
 
-    private void StartChange(bool wall, Vector3 hitNormal, Vector3 newPosition, Vector3 upDir) 
+    private void StartChange(bool wall, Vector3 newPosition, Quaternion newRotation)
     {
-        if (_coroutine != null) 
+        if (_coroutine != null)
         {
             StopChange();
         }
-        _coroutine = StartCoroutine(ChangeOrientationRoutine(wall, hitNormal, newPosition, upDir));
+
+        _coroutine = StartCoroutine(ChangeOrientationRoutine(wall, newPosition, newRotation));
     }
 
     private void StopChange()
@@ -144,25 +122,19 @@ public class WallDetection : MonoBehaviour
         _coroutine = null;
     }
 
-    private IEnumerator ChangeOrientationRoutine(bool wall, Vector3 hitNormal, Vector3 newPosition, Vector3 upDir) 
+    private IEnumerator ChangeOrientationRoutine(bool wall, Vector3 newPosition, Quaternion newRotation)
     {
         float currentTime = 0;
 
         DisableAll();
 
-        var upDir2 = _model.TransformDirection(new Vector3(0, 1f, 0));
-        var forward = _model.TransformDirection(new Vector3(0, 0, 1));
-
-
-        var projectedForward = Project(forward + upDir, hitNormal).normalized;
-
-        Quaternion targetRotation = Quaternion.LookRotation(projectedForward, hitNormal);
+        Quaternion targetRotation = newRotation;
 
         Quaternion startRotation = transform.rotation;
 
         Vector3 startPosition = transform.position;
 
-        while (currentTime < _changeTime) 
+        while (currentTime < _changeTime)
         {
             currentTime += Time.deltaTime;
             transform.position = Vector3.Lerp(startPosition, newPosition, currentTime / _changeTime);
@@ -170,14 +142,14 @@ public class WallDetection : MonoBehaviour
             yield return null;
         }
 
-        transform.rotation = Quaternion.FromToRotation(transform.up, hitNormal) * transform.rotation;
+        transform.rotation = newRotation;
 
-        transform.position = newPosition + upDir * 0.05f;
+        transform.position = newPosition;
 
         _playerPivot.SetPivotValues(transform.position);
 
         ToggleWallMovement(wall);
-        
+
     }
 
     private Vector3 Project(Vector3 forward, Vector3 normal)
