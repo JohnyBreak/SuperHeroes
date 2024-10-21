@@ -13,6 +13,7 @@ public class CameraBehaviour : MonoBehaviour
 
     [SerializeField] private float _radius = 0.3f;
     [SerializeField] private LayerMask _mask;
+    [SerializeField] private bool _drawGizmos = false;
 
     private float _verticalRotation = 0;
     private float _horizontalRotation = 0;
@@ -67,6 +68,8 @@ public class CameraBehaviour : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (_drawGizmos == false) return;
+
         Gizmos.color = Color.red;
         Gizmos.DrawLine(_lookAt.position, _cameraT.position);
         Gizmos.color = Color.blue;

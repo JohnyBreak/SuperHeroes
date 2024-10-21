@@ -40,7 +40,6 @@ public class WallDetection : MonoBehaviour
             _model.forward = -hit.normal;
 
             Quaternion targetRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
-
             StartChange(true, hit.point, targetRotation);
         }
     }
@@ -149,11 +148,5 @@ public class WallDetection : MonoBehaviour
         _playerPivot.SetPivotValues(transform.position);
 
         ToggleWallMovement(wall);
-
-    }
-
-    private Vector3 Project(Vector3 forward, Vector3 normal)
-    {
-        return forward - Vector3.Dot(forward, normal) * normal;
     }
 }

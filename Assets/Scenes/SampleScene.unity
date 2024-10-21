@@ -1118,6 +1118,7 @@ MonoBehaviour:
   _mask:
     serializedVersion: 2
     m_Bits: 320
+  _drawGizmos: 0
 --- !u!1 &914462210
 GameObject:
   m_ObjectHideFlags: 3
@@ -1489,7 +1490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c39cc6e700981a4396f93b43c1abd60, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.04
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c39cc6e700981a4396f93b43c1abd60, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1501,15 +1502,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c39cc6e700981a4396f93b43c1abd60, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c39cc6e700981a4396f93b43c1abd60, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c39cc6e700981a4396f93b43c1abd60, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c39cc6e700981a4396f93b43c1abd60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3326,7 +3327,7 @@ Transform:
   m_GameObject: {fileID: 6064801526292576681}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.532, y: 0, z: -4.395}
+  m_LocalPosition: {x: -2.32, y: 17.25, z: -1.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3491,6 +3492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _groundedGravity: -0.06
   _airGravity: -9.8
+  _gravityClamp: -20
   m_CharacterController: {fileID: 7790563198181469446}
 --- !u!114 &7790563198181469449
 MonoBehaviour:
