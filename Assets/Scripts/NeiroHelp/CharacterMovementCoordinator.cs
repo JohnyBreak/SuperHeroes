@@ -56,22 +56,27 @@ public class CharacterMovementCoordinator : MonoBehaviour
     {
         if (_mode == CharacterLocomotionMode.Transition)
             return;
-
-        Vector3 velocity = Vector3.zero;
-
+        Vector3 velocity;
         if (_mode == CharacterLocomotionMode.Ground)
         {
             _jump.Tick();
-
-            velocity =
-                _groundMovement.CalculateVelocity() +
+            Vector3 verticalVelocity =
                 _gravity.CalculateVelocity(Time.deltaTime);
+            bool useGroundControl =
+                _characterController.IsGrounded &&
+                _gravity.VerticalVelocity <= 0f;
+            Vector3 horizontalVelocity =
+                _groundMovement.CalculateVelocity(
+                    Time.deltaTime,
+                    useGroundControl);
+            velocity =
+                horizontalVelocity +
+                verticalVelocity;
         }
-        else if (_mode == CharacterLocomotionMode.Wall)
+        else
         {
             velocity = _wallMovement.CalculateVelocity();
         }
-
         _characterController.Move(velocity);
     }
 }
