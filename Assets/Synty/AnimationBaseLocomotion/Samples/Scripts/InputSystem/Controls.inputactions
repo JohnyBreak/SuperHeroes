@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "Controls",
     "maps": [
         {
@@ -9,7 +10,16 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "9c4baf7e-dd4a-45cb-b8b5-518f23ef2f3f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WallCheck",
+                    "type": "Button",
+                    "id": "40d219dd-cf13-435d-aa6d-4a710445f9ba",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -98,6 +108,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "07a7055b-0f8c-4d87-988b-d5d6de9643c7",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "WallCheck",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

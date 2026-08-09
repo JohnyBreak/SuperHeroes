@@ -31,7 +31,8 @@ namespace Synty.AnimationBaseLocomotion.Samples.InputSystem
         public Action onCrouchDeactivated;
 
         public Action onJumpPerformed;
-
+        public Action onWallCheckPerformed;
+        
         public Action onLockOnToggled;
 
         public Action onSprintActivated;
@@ -64,6 +65,16 @@ namespace Synty.AnimationBaseLocomotion.Samples.InputSystem
         public void OnLook(InputAction.CallbackContext context)
         {
             _mouseDelta = context.ReadValue<Vector2>();
+        }
+
+        public void OnWallCheck(InputAction.CallbackContext context)
+        {
+            if (!context.performed)
+            {
+                return;
+            }
+
+            onWallCheckPerformed?.Invoke();
         }
 
         /// <summary>

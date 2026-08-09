@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder(200)]
 public class MyCharacterController : MonoBehaviour
 {
     [SerializeField] private CapsuleCollider _playerCollider;
@@ -31,8 +32,11 @@ public class MyCharacterController : MonoBehaviour
     {
         CheckCollision();
         CheckGround();
+        
         FinalMove();
+        
         CheckCollision();
+        CheckGround();
     }
 
 

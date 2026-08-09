@@ -7,146 +7,159 @@ public class WallDetection : MonoBehaviour
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private LayerMask _mask;
     [SerializeField] private Transform _model;
-
-    [SerializeField] private MonoBehaviour _simpleMovement;
-    [SerializeField] private MonoBehaviour _wallMovement;
-    [SerializeField] private MonoBehaviour _gravity;
-    [SerializeField] private MyCharacterController _ctrl;
+    [SerializeField] private CharacterMovementCoordinator _coordinator;
     [SerializeField] private PlayerPivot _playerPivot;
     [SerializeField] private CameraTargetPosition _targetPosition;
-    private bool _onWall => _wallMovement.enabled;
-    private float _dot;
-    private Coroutine _coroutine;
     [SerializeField] private float _changeTime = 0.3f;
+
+    private Coroutine _changeRoutine;
 
     private void Start()
     {
-        _inputReader.onJumpPerformed += CheckWall;
+        _inputReader.onWallCheckPerformed += CheckWall;
         _inputReader.onCrouchActivated += ReleaseWall;
+
+        _coordinator.SetMode(CharacterLocomotionMode.Ground);
     }
 
     private void OnDestroy()
     {
-        _inputReader.onJumpPerformed -= CheckWall;
+        _inputReader.onWallCheckPerformed -= CheckWall;
         _inputReader.onCrouchActivated -= ReleaseWall;
+    }
+
+    private void Update()
+    {
+        if (_coordinator.Mode != CharacterLocomotionMode.Wall)
+            return;
+
+        Vector3 downDirection = -transform.up;
+        Vector3 origin =
+            transform.position - downDirection * 0.5f;
+
+        if (!Physics.Raycast(
+                origin,
+                downDirection,
+                1f,
+                _mask))
+        {
+            return;
+        }
+
+        if (IsFloorNormal())
+            ReleaseWall();
     }
 
     private void CheckWall()
     {
-        var upDir = _model.TransformDirection(new Vector3(0, 1f, 0));
+        if (_coordinator.Mode != CharacterLocomotionMode.Ground)
+            return;
 
-        if (Physics.Raycast(_model.position + upDir, _model.forward, out var hit, 1, _mask))
+        Vector3 upDirection = _model.up;
+
+        if (!Physics.Raycast(
+                _model.position + upDirection,
+                _model.forward,
+                out RaycastHit hit,
+                1f,
+                _mask))
         {
-            _model.forward = -hit.normal;
-
-            Quaternion targetRotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
-            StartChange(true, hit.point, targetRotation);
+            return;
         }
-    }
 
+        _model.forward = -hit.normal;
 
-    private void Update()
-    {
-        if (_onWall)
-        {
-            var dir = transform.TransformDirection(new Vector3(0, -1, 0));
-            if (Physics.Raycast(transform.position + dir * -0.5f, dir, 1, _mask))
-            {
-                if (IsFloorNormal())
-                {
-                    ReleaseWall();
-                }
-            }
-        }
-    }
+        Quaternion targetRotation =
+            Quaternion.FromToRotation(
+                transform.up,
+                hit.normal) *
+            transform.rotation;
 
-    private bool IsFloorNormal()
-    {
-        _dot = Vector3.Dot(_playerPivot.Pivot.up, Vector3.up);
-        return (_dot <= 1 && _dot > 0.85f);
+        StartChange(
+            CharacterLocomotionMode.Wall,
+            hit.point,
+            targetRotation);
     }
 
     private void ReleaseWall()
     {
-        if (_wallMovement.enabled)
-        {
-            var upDir = transform.TransformDirection(new Vector3(0, 1, 0));
-            StartChange(false, transform.position + upDir * 0.5f, Quaternion.identity);
-        }
+        if (_coordinator.Mode != CharacterLocomotionMode.Wall)
+            return;
+
+        Vector3 releasePosition =
+            transform.position + transform.up * 0.5f;
+
+        StartChange(
+            CharacterLocomotionMode.Ground,
+            releasePosition,
+            Quaternion.identity);
     }
 
-    private void ToggleWallMovement(bool wall)
+    private bool IsFloorNormal()
     {
-        ToggleWalkObjects(wall);
-        ToggleWallObjects(wall);
+        float alignment = Vector3.Dot(
+            _playerPivot.Pivot.up,
+            Vector3.up);
+
+        return alignment > 0.85f;
     }
 
-    private void ToggleWalkObjects(bool wall)
+    private void StartChange(
+        CharacterLocomotionMode nextMode,
+        Vector3 newPosition,
+        Quaternion newRotation)
     {
-        _simpleMovement.enabled = !wall;
+        if (_changeRoutine != null)
+            StopCoroutine(_changeRoutine);
 
-        _gravity.enabled = !wall;
-        _ctrl.ShouldSnapToGround = !wall;
+        _changeRoutine = StartCoroutine(
+            ChangeOrientationRoutine(
+                nextMode,
+                newPosition,
+                newRotation));
     }
 
-    private void ToggleWallObjects(bool wall)
+    private IEnumerator ChangeOrientationRoutine(
+        CharacterLocomotionMode nextMode,
+        Vector3 newPosition,
+        Quaternion newRotation)
     {
-        _wallMovement.enabled = wall;
-        _playerPivot.enabled = wall;
-        _targetPosition.ToggleWallPosition(wall);
-    }
-    private void DisableAll()
-    {
-        _simpleMovement.enabled = false;
-        _wallMovement.enabled = false;
-        _gravity.enabled = false;
-        _ctrl.ShouldSnapToGround = false;
-        _playerPivot.enabled = false;
-        _targetPosition.ToggleWallPosition(false);
-    }
+        _coordinator.SetMode(
+            CharacterLocomotionMode.Transition);
 
-    private void StartChange(bool wall, Vector3 newPosition, Quaternion newRotation)
-    {
-        if (_coroutine != null)
-        {
-            StopChange();
-        }
-
-        _coroutine = StartCoroutine(ChangeOrientationRoutine(wall, newPosition, newRotation));
-    }
-
-    private void StopChange()
-    {
-        StopCoroutine(_coroutine);
-        _coroutine = null;
-    }
-
-    private IEnumerator ChangeOrientationRoutine(bool wall, Vector3 newPosition, Quaternion newRotation)
-    {
-        float currentTime = 0;
-
-        DisableAll();
-
-        Quaternion targetRotation = newRotation;
+        _targetPosition.ToggleWallPosition(
+            nextMode == CharacterLocomotionMode.Wall);
 
         Quaternion startRotation = transform.rotation;
-
         Vector3 startPosition = transform.position;
+        float currentTime = 0f;
 
         while (currentTime < _changeTime)
         {
             currentTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPosition, newPosition, currentTime / _changeTime);
-            transform.rotation = Quaternion.Lerp(startRotation, targetRotation, currentTime / _changeTime);
+            float progress = currentTime / _changeTime;
+
+            transform.position = Vector3.Lerp(
+                startPosition,
+                newPosition,
+                progress);
+
+            transform.rotation = Quaternion.Lerp(
+                startRotation,
+                newRotation,
+                progress);
+
             yield return null;
         }
 
+        transform.position = newPosition;
         transform.rotation = newRotation;
 
-        transform.position = newPosition;
-
         _playerPivot.SetPivotValues(transform.position);
+        _playerPivot.enabled =
+            nextMode == CharacterLocomotionMode.Wall;
 
-        ToggleWallMovement(wall);
+        _coordinator.SetMode(nextMode);
+        _changeRoutine = null;
     }
 }

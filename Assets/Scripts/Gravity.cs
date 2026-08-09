@@ -2,38 +2,73 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+    [SerializeField] private MyCharacterController _characterController;
+
+    [Header("Gravity")]
     [SerializeField] private float _groundedGravity = -0.6f;
-    [SerializeField] private float _airGravity = -9.8f;
+    [SerializeField] private float _fallGravity = -30f;
+    [SerializeField] private float _maximumFallSpeed = -40f;
 
-    [SerializeField] private float _gravityClamp = -20;
+    private float _verticalVelocity;
+    private float _jumpGravity;
+    private bool _isAscendingAfterJump;
 
-    [SerializeField] private MyCharacterController m_CharacterController;
-    private float _totalGravity = 0;
+    public float VerticalVelocity => _verticalVelocity;
 
-    void Update()
+    private void Awake()
     {
-        if (m_CharacterController.IsGrounded == false)
+        Debug.Assert(_characterController != null);
+        Debug.Assert(_fallGravity < 0f);
+        Debug.Assert(_maximumFallSpeed < 0f);
+    }
+
+    public Vector3 CalculateVelocity(float deltaTime)
+    {
+        if (_characterController.IsGrounded &&
+            _verticalVelocity <= 0f)
         {
-            if(_totalGravity > _airGravity)
-            {
-                _totalGravity = _airGravity;
-            }
-            _totalGravity += _airGravity * Time.deltaTime;
-        }
-        else 
-        {
-            _totalGravity = _groundedGravity;
+            _verticalVelocity = _groundedGravity;
+            _isAscendingAfterJump = false;
+            _characterController.ShouldSnapToGround = true;
+
+            return Vector3.up * _verticalVelocity;
         }
 
-        if (_totalGravity < _gravityClamp) 
-        {
-            _totalGravity = _gravityClamp;
-        }
+        _characterController.ShouldSnapToGround = false;
 
-        var gravityDir = Vector3.down;
+        float acceleration =
+            _isAscendingAfterJump && _verticalVelocity > 0f
+                ? _jumpGravity
+                : _fallGravity;
 
-        gravityDir.y = _totalGravity;
+        float velocityBeforeAcceleration =
+            _verticalVelocity;
 
-        m_CharacterController.Move(gravityDir);
+        _verticalVelocity += acceleration * deltaTime;
+        _verticalVelocity = Mathf.Max(
+            _verticalVelocity,
+            _maximumFallSpeed);
+
+        if (_verticalVelocity <= 0f)
+            _isAscendingAfterJump = false;
+
+        float averageFrameVelocity =
+            (velocityBeforeAcceleration + _verticalVelocity) * 0.5f;
+
+        return Vector3.up * averageFrameVelocity;
+    }
+
+    public void StartJump(float jumpSpeed, float jumpHeight)
+    {
+        jumpHeight = Mathf.Max(jumpHeight, 0.01f);
+
+        _verticalVelocity = jumpSpeed;
+
+        _jumpGravity =
+            -(jumpSpeed * jumpSpeed) /
+            (2f * jumpHeight);
+
+        _isAscendingAfterJump = true;
+        _characterController.ShouldSnapToGround = false;
     }
 }
