@@ -6,10 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="a939b99d-0117-43e6-906f-a759e76b2f85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gravity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gravity.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/CharacterMovementCoordinator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/CharacterMovementCoordinator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/ChargedVerletJump.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/ChargedVerletJump.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/WebSwingVerlet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/WebSwingVerlet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/SimpleMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SimpleMovement.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpiderOrbitCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpiderOrbitCamera.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +30,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5fbef2e591e14a4c91f3c5e34508b853212600/38/c36ec835/Object.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NeiroHelp/CharacterMovementCoordinator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NeiroHelp/ChargedVerletJump.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@21a28c3a6c83/InputSystem/Plugins/PlayerInput/PlayerInput.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -112,7 +117,9 @@
       <updated>1785356067987</updated>
       <workItem from="1785356071370" duration="829000" />
       <workItem from="1785776769173" duration="8178000" />
-      <workItem from="1786299823669" duration="6923000" />
+      <workItem from="1786299823669" duration="8206000" />
+      <workItem from="1786318195400" duration="2454000" />
+      <workItem from="1786388604422" duration="5894000" />
     </task>
     <servers />
   </component>

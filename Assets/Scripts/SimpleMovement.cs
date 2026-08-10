@@ -20,22 +20,22 @@ public class SimpleMovement : MonoBehaviour
     
     private int _movementHash = Animator.StringToHash("MovementSpeed");
 
-    void Update()
-    {
-        if (_inputReader._movementInputDetected) 
-        {
-            Vector3 cameraEuler = Quaternion.Euler(0, _cameraTransform.eulerAngles.y, 0) * new Vector3(_inputReader._moveComposite.x, 0, _inputReader._moveComposite.y);
-            Vector3 movementDirection = cameraEuler.normalized;
+    //void Update()
+    //{
+    //    if (_inputReader._movementInputDetected) 
+    //    {
+    //        Vector3 cameraEuler = Quaternion.Euler(0, _cameraTransform.eulerAngles.y, 0) * new Vector3(_inputReader._moveComposite.x, 0, _inputReader._moveComposite.y);
+    //        Vector3 movementDirection = cameraEuler.normalized;
 
-            Quaternion desiredRotation = Quaternion.LookRotation(movementDirection, transform.up);
+    //        Quaternion desiredRotation = Quaternion.LookRotation(movementDirection, transform.up);
 
-            _model.rotation = Quaternion.Slerp(_model.rotation, desiredRotation, _rotationSpeed * Time.deltaTime);
+    //        _model.rotation = Quaternion.Slerp(_model.rotation, desiredRotation, _rotationSpeed * Time.deltaTime);
 
-            _characterController.Move(movementDirection * GetSpeed());
-        }
+    //        _characterController.Move(movementDirection * GetSpeed());
+    //    }
 
-        _animator.SetFloat(_movementHash, GetAnimationSpeed(), 0.75f, 0.2f);
-    }
+    //    _animator.SetFloat(_movementHash, GetAnimationSpeed(), 0.75f, 0.2f);
+    //}
     
     public Vector3 CalculateVelocity(
         float deltaTime,
@@ -81,6 +81,15 @@ public class SimpleMovement : MonoBehaviour
             deltaTime);
         return _horizontalVelocity;
     }
+    
+    public void SetHorizontalVelocity(Vector3 velocity)
+    {
+        _horizontalVelocity =
+            Vector3.ProjectOnPlane(
+                velocity,
+                Vector3.up);
+    }
+    
     private void RotateModel(
         Vector3 movementDirection,
         bool useGroundControl,

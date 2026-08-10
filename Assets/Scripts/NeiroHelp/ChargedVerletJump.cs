@@ -81,7 +81,7 @@ public class ChargedJump : MonoBehaviour
 
         _isCharging = false;
     }
-
+    
     private float CalculateCharge(float heldDuration)
     {
         float effectiveDuration = Mathf.Max(

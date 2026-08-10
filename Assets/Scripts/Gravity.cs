@@ -12,7 +12,8 @@ public class Gravity : MonoBehaviour
     private float _verticalVelocity;
     private float _jumpGravity;
     private bool _isAscendingAfterJump;
-
+    
+    public Vector3 AirAcceleration => Vector3.up * _fallGravity;
     public float VerticalVelocity => _verticalVelocity;
 
     private void Awake()
@@ -21,7 +22,15 @@ public class Gravity : MonoBehaviour
         Debug.Assert(_fallGravity < 0f);
         Debug.Assert(_maximumFallSpeed < 0f);
     }
-
+    
+    public void SetVerticalVelocity(float verticalVelocity)
+    {
+        _verticalVelocity = verticalVelocity;
+        if (verticalVelocity > 0f)
+            _isAscendingAfterJump = false;
+        _characterController.ShouldSnapToGround = false;
+    }
+    
     public Vector3 CalculateVelocity(float deltaTime)
     {
         if (_characterController.IsGrounded &&

@@ -120,6 +120,9 @@ GameObject:
   - component: {fileID: 7709979808861959274}
   - component: {fileID: 806848374810469216}
   - component: {fileID: 6921132939552497714}
+  - component: {fileID: 1632287897833329999}
+  - component: {fileID: 1531806513796610455}
+  - component: {fileID: 1147972773117648476}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -179,6 +182,8 @@ MonoBehaviour:
   _cameraTransform: {fileID: 0}
   _animator: {fileID: 4738748561077463677}
   _model: {fileID: 335740644999245389}
+  _airControlAcceleration: 4
+  _airRotationMultiplier: 0.35
 --- !u!114 &438215110920351931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,10 +201,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _model: {fileID: 335740644999245389}
-  _simpleMovement: {fileID: 412904006130151714}
-  _wallMovement: {fileID: 505976487690602252}
-  _gravity: {fileID: 806848374810469216}
-  _ctrl: {fileID: 7861317628172267467}
+  _coordinator: {fileID: 1531806513796610455}
   _playerPivot: {fileID: 6921132939552497714}
   _targetPosition: {fileID: 8009640226526649144}
   _changeTime: 0.3
@@ -215,7 +217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be66a4d4943f8d84b8cb347ee487ba52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterController: {fileID: 7861317628172267467}
   _cameraTransform: {fileID: 0}
   _mask:
     serializedVersion: 2
@@ -226,6 +227,7 @@ MonoBehaviour:
   _inputReader: {fileID: 3942465880874444955}
   _model: {fileID: 335740644999245389}
   _playerPivot: {fileID: 0}
+  _surfaceOffset: 0.05
 --- !u!114 &7861317628172267467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +243,7 @@ MonoBehaviour:
   _playerCollider: {fileID: 9088327260554303058}
   _discludePlayer:
     serializedVersion: 2
-    m_Bits: 321
+    m_Bits: 832
   _playerHeight: 2
   ShouldSnapToGround: 1
   _smooth: 1
@@ -298,10 +300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48c8b25812c42694f8f708ada31cfcf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterController: {fileID: 7861317628172267467}
   _groundedGravity: -0.06
-  _airGravity: -9.8
-  _gravityClamp: -20
-  m_CharacterController: {fileID: 7861317628172267467}
+  _fallGravity: -30
+  _maximumFallSpeed: -100
 --- !u!114 &6921132939552497714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,6 +320,60 @@ MonoBehaviour:
   scan: {fileID: 3363703297997536202}
   positionWeight: 0
   rotationWeight: 1
+--- !u!114 &1632287897833329999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9069834887437447994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b029c30f56293b94e9c2f3715bc240de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChargedVerletJump
+  _characterController: {fileID: 7861317628172267467}
+  _gravity: {fileID: 806848374810469216}
+  _jumpSpeed: 30
+  _minimumJumpHeight: 5
+  _maximumJumpHeight: 20
+  _maximumChargeDuration: 1
+  _tapDuration: 0.1
+--- !u!114 &1531806513796610455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9069834887437447994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea4f0388b6db0b4f904e3b375053a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterMovementCoordinator
+  _characterController: {fileID: 7861317628172267467}
+  _groundMovement: {fileID: 412904006130151714}
+  _wallMovement: {fileID: 505976487690602252}
+  _gravity: {fileID: 806848374810469216}
+  _jump: {fileID: 1632287897833329999}
+  _webSwing: {fileID: 1147972773117648476}
+--- !u!114 &1147972773117648476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9069834887437447994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d13027e663351458bb421e540e4982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WebSwingVerlet
+  _gravity: {fileID: 806848374810469216}
+  _minimumRopeLength: 2
+  _maximumStretch: 0.4
+  _maximumSpeed: 35
+  _momentumRetentionAt60Fps: 0.995
 --- !u!1001 &225869559967140262
 PrefabInstance:
   m_ObjectHideFlags: 0

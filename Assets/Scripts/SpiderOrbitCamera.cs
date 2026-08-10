@@ -14,7 +14,8 @@ public class SpiderOrbitCamera : MonoBehaviour
     [SerializeField] private LayerMask _collisionMask = ~0;
     [SerializeField] private float _collisionRadius = 0.2f;
     [SerializeField] private float _collisionBuffer = 0.05f;
-
+    
+    [SerializeField] private bool _hideCursor = true;
     private float _yaw;
     private float _pitch;
     private Quaternion _orbitFrame = Quaternion.identity;
@@ -22,8 +23,13 @@ public class SpiderOrbitCamera : MonoBehaviour
     private void Awake()
     {
         Debug.Assert(_target != null, $"{nameof(SpiderOrbitCamera)} needs a target.");
+        if (_hideCursor)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
-
+    
     private void Start()
     {
         _orbitFrame = BuildOrbitFrame(_target.up, -_target.forward);
