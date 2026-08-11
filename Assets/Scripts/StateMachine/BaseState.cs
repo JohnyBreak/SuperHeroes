@@ -1,27 +1,37 @@
+using System;
+
 namespace UnitStateMachine
 {
-    public abstract class BaseState
+    public abstract class BaseState : IDisposable
     {
-        protected StateMachine _ctx;
+        private StateMachine _ctx;
         protected StateFactory _factory;
-        protected BaseState _currentSuperState;
-        protected BaseState _currentSubState;
+        private BaseState _currentSuperState;
+        private BaseState _currentSubState;
 
         public abstract int Key();
 
-        public abstract void EnterState();
-        public abstract void OnUpdateState();
-        public abstract void ExitState();
-        public abstract void CheckSwitchState();
-        public abstract void InitializeSubState();
-
+        protected abstract void OnEnterState();
+        
+        protected abstract void OnUpdateState();
+        protected abstract void ExitState();
+        protected abstract void CheckSwitchState();
+        protected abstract void InitializeSubState();
+        protected virtual void OnDispose() { }
+        
         protected BaseState(StateMachine currentContext, StateFactory unitStateFactory)
         {
             _ctx = currentContext;
             _factory = unitStateFactory;
             _factory.AddState(this);
         }
-
+        
+        public void EnterState()
+        {
+            OnEnterState();
+            InitializeSubState();
+        }
+        
         public void UpdateStates()
         {
             OnUpdateState();
@@ -31,7 +41,16 @@ namespace UnitStateMachine
             }
             CheckSwitchState();
         }
-    
+        
+        public void ExitStates()
+        {
+            ExitState();
+            if (_currentSubState != null)
+            {
+                _currentSubState.ExitStates();
+            }
+        }
+        
         protected void SwitchState(BaseState newState)
         {
             ExitState();
@@ -59,13 +78,10 @@ namespace UnitStateMachine
             newSubState.SetSuperState(this);
         }
 
-        public void ExitStates()
+        public void Dispose()
         {
-            ExitState();
-            if (_currentSubState != null)
-            {
-                _currentSubState.ExitStates();
-            }
+            OnDispose();
+            _currentSubState?.Dispose();
         }
     }
 }

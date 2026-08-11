@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
 {
-    public class MoveState : BaseState
+    public class FallMoveState : BaseState
     {
         private readonly InputReader _inputReader;
         private readonly UnitVelocity _velocity;
         private Transform _cameraTransform;
         private readonly Transform _model;
-        private float _rotationSpeed = 6f;
-        private float _moveSpeed = 6f;
+        private float _rotationSpeed = 3f;
+        private float _moveSpeed = 2.5f;
         private int _movementHash = Animator.StringToHash("MovementSpeed");
         private Animator _animator;
         
-        public MoveState(
+        public FallMoveState(
             StateMachine currentContext,
             StateFactory unitStateFactory,
             InputReader inputReader,
@@ -32,7 +32,7 @@ namespace UnitStateMachine.PlayerStates
 
         public override int Key()
         {
-            return States.Move;
+            return States.FallMove;
         }
 
         protected override void OnEnterState()
@@ -105,14 +105,14 @@ namespace UnitStateMachine.PlayerStates
                 _rotationSpeed * deltaTime);
         }
     
-        private float GetAnimationSpeed() 
+        private float GetAnimationSpeed()
         {
             return (_inputReader._movementInputDetected) ? GetSpeed() : 0;
         }
 
         private float GetSpeed() 
         {
-            return (_inputReader.SprintDetected) ? _moveSpeed * 2 : _moveSpeed;
+            return _moveSpeed;
         }
     }
 }

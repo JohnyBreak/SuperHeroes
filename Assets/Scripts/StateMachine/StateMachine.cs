@@ -1,9 +1,14 @@
+using System;
+using UnityEngine;
+
 namespace UnitStateMachine
 {
+    [Serializable]
     public class StateMachine
     {
+        [SerializeField] private string CurrentStateName;
         private BaseState _currentState;
-
+        
         public StateMachine()
         {
         }
@@ -21,6 +26,8 @@ namespace UnitStateMachine
         public void Tick()
         {
             _currentState?.UpdateStates();
+
+            CurrentStateName = _currentState != null ? _currentState.GetType().Name : "None";
         }
     }
 }

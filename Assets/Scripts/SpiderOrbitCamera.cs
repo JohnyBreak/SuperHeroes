@@ -33,7 +33,7 @@ public class SpiderOrbitCamera : MonoBehaviour
     private void Start()
     {
         _orbitFrame = BuildOrbitFrame(_target.up, -_target.forward);
-
+return;
         Vector3 focusPoint = _target.TransformPoint(_focusOffset);
         Vector3 localOffset = Quaternion.Inverse(_orbitFrame) * (transform.position - focusPoint);
 

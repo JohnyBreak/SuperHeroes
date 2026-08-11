@@ -2468,6 +2468,7 @@ MonoBehaviour:
     m_Bits: 832
   _collisionRadius: 0.2
   _collisionBuffer: 0.05
+  _hideCursor: 1
 --- !u!20 &1804223281
 Camera:
   m_ObjectHideFlags: 0
@@ -2812,7 +2813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8005503594794531422, guid: 9dbbdecc66a9b7140ae7faa1821d57a0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.42
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8005503594794531422, guid: 9dbbdecc66a9b7140ae7faa1821d57a0, type: 3}
       propertyPath: m_LocalPosition.z

@@ -3,11 +3,12 @@ using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
 {
-    public class IdleState : BaseState
+    public class FallIdleState: BaseState
     {
         private readonly InputReader _inputReader;
         private readonly UnitVelocity _velocity;
-        public IdleState(
+        
+        public FallIdleState(
             StateMachine currentContext, 
             StateFactory unitStateFactory, 
             InputReader inputReader,
@@ -19,7 +20,7 @@ namespace UnitStateMachine.PlayerStates
 
         public override int Key()
         {
-            return States.Idle;
+            return States.FallIdle;
         }
 
         protected override void OnEnterState()
@@ -40,7 +41,7 @@ namespace UnitStateMachine.PlayerStates
         {
             if (_inputReader._movementInputDetected)
             {
-                SwitchState(_factory.Get(States.Move));
+                SwitchState(_factory.Get(States.FallMove));
             }
         }
 

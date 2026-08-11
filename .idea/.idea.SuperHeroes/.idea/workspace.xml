@@ -6,14 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="a939b99d-0117-43e6-906f-a759e76b2f85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gravity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gravity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/CharacterMovementCoordinator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/CharacterMovementCoordinator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/ChargedVerletJump.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/ChargedVerletJump.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/WebSwingVerlet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/WebSwingVerlet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SimpleMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SimpleMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/StateScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/StateScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpiderOrbitCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpiderOrbitCamera.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/BaseState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/BaseState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/StateFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/StateFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/StateMachine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/StateMachine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/GroundedState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/GroundedState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/IdleState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/IdleState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/MoveState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/MoveState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TimeManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TimeManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,13 +96,15 @@
       <option name="useMixedMode" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="4024">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="4024" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list />
+        <list>
+          <MonoRuntime />
+        </list>
       </option>
       <option name="selectedOptions">
         <list />
@@ -120,6 +125,7 @@
       <workItem from="1786299823669" duration="8206000" />
       <workItem from="1786318195400" duration="2454000" />
       <workItem from="1786388604422" duration="5894000" />
+      <workItem from="1786453022219" duration="10480000" />
     </task>
     <servers />
   </component>
