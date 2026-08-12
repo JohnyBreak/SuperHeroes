@@ -6,21 +6,22 @@ namespace UnitStateMachine.PlayerStates
     public class FallState : BaseState, IRootState
     {
         private readonly MyCharacterController _controller;
+        private readonly PlayerSharedData _sharedData;
         private readonly InputReader _inputReader;
         private readonly UnitVelocity _velocity;
-        private const float _gravity = -9.8f;
-        private const float _maxFallGravity = -35f;
         
         public FallState(
             StateMachine currentContext, 
             StateFactory unitStateFactory,
             UnitVelocity velocity,
             InputReader inputReader,
-            MyCharacterController controller) : base(currentContext, unitStateFactory)
+            MyCharacterController controller,
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
             _velocity = velocity;
             _inputReader = inputReader;
             _controller = controller;
+            _sharedData = sharedData;
         }
 
         public override int Key()
@@ -30,7 +31,6 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            //_velocity.SetVelocity(Vector3.up * (_gravity * Time.deltaTime));
         }
 
         protected override void OnUpdateState()
@@ -40,18 +40,27 @@ namespace UnitStateMachine.PlayerStates
 
         private void HandleGravity()
         {
+            float previousYVelocity = _sharedData.PreviousYVelocity;
+
+            _sharedData.PreviousYVelocity += _sharedData.Gravity * Time.deltaTime;
+            float appliedY = Mathf.Max((previousYVelocity + _sharedData.PreviousYVelocity) * .5f,
+                _sharedData.MaxFallGravity);
+            
+            //_velocity.AddVelocity(Vector3.up * appliedY);
+            _velocity.SetYVelocity(appliedY);
+            return;
             var current = _velocity.GetVelocity().y;
             
-            if (current <= _maxFallGravity)
+            if (current <= _sharedData.MaxFallGravity)
             {
                 return;
             }
             
-            var additionalGravity = _gravity * Time.deltaTime;
+            var additionalGravity = _sharedData.Gravity * Time.deltaTime;
             
-            if ((current + additionalGravity) < _maxFallGravity)
+            if ((current + additionalGravity) < _sharedData.MaxFallGravity)
             {
-                additionalGravity = _maxFallGravity - current;
+                additionalGravity = _sharedData.MaxFallGravity - current;
             }
             
             _velocity.AddVelocity(Vector3.up * additionalGravity);

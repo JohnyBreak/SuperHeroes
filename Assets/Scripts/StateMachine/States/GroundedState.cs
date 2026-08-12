@@ -8,6 +8,7 @@ namespace UnitStateMachine.PlayerStates
         private readonly InputReader _inputReader;
         private readonly UnitVelocity _velocity;
         private readonly MyCharacterController _controller;
+        private readonly PlayerSharedData _sharedData;
         private float _groundedGravity = -0.6f;
         
         public GroundedState(
@@ -15,13 +16,13 @@ namespace UnitStateMachine.PlayerStates
             StateFactory unitStateFactory,
             InputReader inputReader,
             UnitVelocity velocity,
-            MyCharacterController controller) : base(currentContext, unitStateFactory)
+            MyCharacterController controller,
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
             _inputReader = inputReader;
             _velocity = velocity;
             _controller = controller;
-
-            _inputReader.onJumpPerformed += OnJump;
+            _sharedData = sharedData;
         }
 
         public override int Key()
@@ -31,8 +32,9 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            Debug.Log("enter ground");
+            _sharedData.PreviousYVelocity = _groundedGravity;
             _velocity.SetVelocity(Vector3.up * _groundedGravity);
+            _inputReader.onJumpPerformed += OnJump;
         }
 
         protected override void OnUpdateState()
@@ -41,7 +43,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void ExitState()
         {
-            
+            _inputReader.onJumpPerformed -= OnJump;
         }
 
         protected override void CheckSwitchState()

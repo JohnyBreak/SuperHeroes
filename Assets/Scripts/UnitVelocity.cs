@@ -40,4 +40,9 @@ public class UnitVelocity
     {
         _velocity = new Vector3(_velocity.x, 0, _velocity.z);
     }
+
+    public void SetYVelocity(float appliedY)
+    {
+        _velocity = new Vector3(_velocity.x, appliedY, _velocity.z);
+    }
 }

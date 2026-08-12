@@ -1,4 +1,5 @@
 using Synty.AnimationBaseLocomotion.Samples.InputSystem;
+using Unity.Mathematics.Geometry;
 using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
@@ -6,19 +7,21 @@ namespace UnitStateMachine.PlayerStates
     public class JumpState : BaseState, IRootState
     {
         private readonly MyCharacterController _controller;
+        private readonly PlayerSharedData _sharedData;
         private readonly InputReader _inputReader;
         private readonly UnitVelocity _velocity;
-        private const float _gravity = -9.8f;
-        private const float _maxFallGravity = -35f;
-
+        private bool _groundSnapToggleOnce;
+        
         public JumpState(
             StateMachine currentContext, 
             StateFactory unitStateFactory,
             InputReader inputReader,
             UnitVelocity velocity,
-            MyCharacterController controller) : base(currentContext, unitStateFactory)
+            MyCharacterController controller,
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
             _controller = controller;
+            _sharedData = sharedData;
             _inputReader = inputReader;
             _velocity = velocity;
         }
@@ -30,43 +33,61 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            Debug.Log(_velocity.GetVelocity());
-            _velocity.AddVelocity(Vector3.up * 35);
+            _controller.ShouldSnapToGround = false;
+            _sharedData.PreviousYVelocity = _sharedData.InitialJumpVelocity;
+            _velocity.SetYVelocity(_sharedData.InitialJumpVelocity);
+            _groundSnapToggleOnce = false;
             // apply jump force
         }
 
         protected override void OnUpdateState()
         {
+            if (!_groundSnapToggleOnce && _velocity.GetVelocity().y <= 0)
+            {
+                _controller.ShouldSnapToGround = true;
+                _groundSnapToggleOnce = true;
+            }
+
             // apply gravity
             HandleGravity();
         }
         
         private void HandleGravity()
         {
+            float previousYVelocity = _sharedData.PreviousYVelocity;
+
+            _sharedData.PreviousYVelocity += _sharedData.JumpGravity * Time.deltaTime;
+            float appliedY = Mathf.Max((previousYVelocity + _sharedData.PreviousYVelocity) * .5f,
+                _sharedData.MaxFallGravity);
+            
+            _velocity.SetYVelocity(appliedY);
+            return;
             var current = _velocity.GetVelocity().y;
             
-            if (current <= _maxFallGravity)
+            if (current <= _sharedData.MaxFallGravity)
             {
                 return;
             }
             
-            var additionalGravity = _gravity * Time.deltaTime;
+            var additionalGravity = _sharedData.JumpGravity * Time.deltaTime;
             
-            if ((current + additionalGravity) < _maxFallGravity)
+            if ((current + additionalGravity) < _sharedData.MaxFallGravity)
             {
-                additionalGravity = _maxFallGravity - current;
+                additionalGravity = _sharedData.MaxFallGravity - current;
             }
             
             _velocity.AddVelocity(Vector3.up * additionalGravity);
         }
+        
         protected override void ExitState()
         {
+            _groundSnapToggleOnce = false;
         }
 
         protected override void CheckSwitchState()
         {
             // if current Y velocity newar 0 switch to fall
-            if (_controller.IsGrounded)
+            if ( _velocity.GetVelocity().y <= 0 && _controller.IsGrounded)
             {
                 SwitchState(_factory.Get(States.Grounded));
             }

@@ -13,7 +13,8 @@ namespace UnitStateMachine.PlayerStates
         private float _moveSpeed = 6f;
         private int _movementHash = Animator.StringToHash("MovementSpeed");
         private Animator _animator;
-        
+        private readonly PlayerSharedData _sharedData;
+
         public MoveState(
             StateMachine currentContext,
             StateFactory unitStateFactory,
@@ -21,13 +22,15 @@ namespace UnitStateMachine.PlayerStates
             UnitVelocity velocity,
             Transform cameraTransform,
             Transform model,
-            Animator animator) : base(currentContext, unitStateFactory)
+            Animator animator,
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
             _inputReader = inputReader;
             _velocity = velocity;
             _cameraTransform = cameraTransform;
             _model = model;
             _animator = animator;
+            _sharedData = sharedData;
         }
 
         public override int Key()
@@ -37,7 +40,6 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            Debug.Log("enter move");
         }
 
         protected override void OnUpdateState()
@@ -56,6 +58,7 @@ namespace UnitStateMachine.PlayerStates
                     0f,
                     _cameraTransform.eulerAngles.y,
                     0f);
+                
                 Vector3 movementDirection =
                     (cameraRotation * input).normalized;
                 

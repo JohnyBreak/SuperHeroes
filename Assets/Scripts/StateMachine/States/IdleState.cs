@@ -7,14 +7,18 @@ namespace UnitStateMachine.PlayerStates
     {
         private readonly InputReader _inputReader;
         private readonly UnitVelocity _velocity;
+        private readonly PlayerSharedData _sharedData;
+
         public IdleState(
             StateMachine currentContext, 
             StateFactory unitStateFactory, 
             InputReader inputReader,
-            UnitVelocity velocity) : base(currentContext, unitStateFactory)
+            UnitVelocity velocity,
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
             _inputReader = inputReader;
             _velocity = velocity;
+            _sharedData = sharedData;
         }
 
         public override int Key()
@@ -24,7 +28,6 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            Debug.Log("enter idle");
             _velocity.ZeroXZVelocity();
         }
 

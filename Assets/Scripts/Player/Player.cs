@@ -14,18 +14,21 @@ public class Player : MonoBehaviour
     private StateFactory _stateFactory;
     
     private UnitVelocity _velocity = new UnitVelocity();
+    private PlayerSharedData _sharedData = new PlayerSharedData();
     
     private void Start()
     {
         _stateMachine = new StateMachine();
         _stateFactory = new StateFactory();
+        _sharedData.Init();
         
         GroundedState grounded = new GroundedState(
             _stateMachine, 
             _stateFactory, 
             _inputReader,
             _velocity,
-            _controller);
+            _controller,
+            _sharedData);
         
         MoveState move = new MoveState(
             _stateMachine, 
@@ -34,20 +37,23 @@ public class Player : MonoBehaviour
             _velocity, 
             _cameraTransform,
             _model,
-            null);
+            null,
+            _sharedData);
         
         IdleState idle = new IdleState(
             _stateMachine, 
             _stateFactory, 
             _inputReader, 
-            _velocity);
+            _velocity,
+            _sharedData);
         
         FallState fall = new FallState(
             _stateMachine,
             _stateFactory,
             _velocity,
             _inputReader,
-            _controller);
+            _controller,
+            _sharedData);
 
         FallMoveState fallMove = new FallMoveState(
             _stateMachine,
@@ -69,7 +75,8 @@ public class Player : MonoBehaviour
             _stateFactory, 
             _inputReader, 
             _velocity,
-            _controller);
+            _controller,
+            _sharedData);
         
         _stateMachine.SetState(grounded);
         _stateMachine.Start();
