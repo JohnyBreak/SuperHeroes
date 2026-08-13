@@ -9,6 +9,8 @@ namespace UnitStateMachine.PlayerStates
         private readonly UnitVelocity _velocity;
         private readonly MyCharacterController _controller;
         private readonly PlayerSharedData _sharedData;
+        private readonly Transform _model;
+        private readonly int _layerMask;
         private float _groundedGravity = -0.6f;
         
         public GroundedState(
@@ -17,12 +19,16 @@ namespace UnitStateMachine.PlayerStates
             InputReader inputReader,
             UnitVelocity velocity,
             MyCharacterController controller,
-            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
+            PlayerSharedData sharedData,
+            Transform model,
+            int layerMask) : base(currentContext, unitStateFactory)
         {
             _inputReader = inputReader;
             _velocity = velocity;
             _controller = controller;
             _sharedData = sharedData;
+            _model = model;
+            _layerMask = layerMask;
         }
 
         public override int Key()
@@ -35,6 +41,7 @@ namespace UnitStateMachine.PlayerStates
             _sharedData.PreviousYVelocity = _groundedGravity;
             _velocity.SetVelocity(Vector3.up * _groundedGravity);
             _inputReader.onJumpPerformed += OnJump;
+            _inputReader.onWallCheckPerformed += WallDetection;
         }
 
         protected override void OnUpdateState()
@@ -44,6 +51,7 @@ namespace UnitStateMachine.PlayerStates
         protected override void ExitState()
         {
             _inputReader.onJumpPerformed -= OnJump;
+            _inputReader.onWallCheckPerformed -= WallDetection;
         }
 
         protected override void CheckSwitchState()
@@ -68,11 +76,35 @@ namespace UnitStateMachine.PlayerStates
         {
             base.OnDispose();
             _inputReader.onJumpPerformed -= OnJump;
+            _inputReader.onWallCheckPerformed -= WallDetection;
         }
 
         private void OnJump()
         {
             SwitchState(_factory.Get(States.Jump));
+        }
+
+        private void WallDetection()
+        {
+            Vector3 upDirection = _model.up;
+
+            if (!Physics.SphereCast( 
+                    _model.position + upDirection,
+                    radius: 0.2f,
+                    _model.forward,
+                    out RaycastHit hit,
+                    1f,
+                    _layerMask))
+            {
+                return;
+            }
+
+            SwitchState(_factory.Get(States.Wall));
+            
+            //StartChange(
+            //    CharacterLocomotionMode.Wall,
+            //    hit.point,
+            //    targetRotation);
         }
     }
 }

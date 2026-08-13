@@ -119,6 +119,64 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &60995124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 60995126}
+  - component: {fileID: 60995125}
+  m_Layer: 7
+  m_Name: Scan
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &60995125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60995124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5cb2c85e0d8b049ac5f9a8139a2029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armCount: 11
+  armLenght: 1.37
+  armLenghtCoef: {x: 1, y: 2}
+  armPoints: 4
+  armLenghtSpeedCoef: 0
+  weightByDist: 0
+  arcAngle: 240
+  arcResolution: 4
+  arcLayer:
+    serializedVersion: 2
+    m_Bits: 320
+  gizmoDrawPoint: 0
+  gizmoDrawLink: 0
+  _drawArcGizmo: 0
+--- !u!4 &60995126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60995124}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 249646373}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &249646369
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +190,7 @@ GameObject:
   - component: {fileID: 249646375}
   - component: {fileID: 249646374}
   - component: {fileID: 249646376}
+  - component: {fileID: 249646377}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -171,12 +230,13 @@ Transform:
   m_GameObject: {fileID: 249646369}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 27.83, z: -8.76}
+  m_LocalPosition: {x: 0, y: 27.85, z: -7.7228684}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1084855838}
   - {fileID: 1924071801}
+  - {fileID: 60995126}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &249646374
@@ -219,6 +279,14 @@ MonoBehaviour:
   _inputReader: {fileID: 249646376}
   _controller: {fileID: 249646374}
   _model: {fileID: 1924071801}
+  _wallDetectionMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _playerPivot: {fileID: 249646377}
+  _playerPivotT: {fileID: 1736236447}
+  _wallMovementMask:
+    serializedVersion: 2
+    m_Bits: 320
 --- !u!114 &249646376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,6 +304,22 @@ MonoBehaviour:
   _movementInputDuration: 0
   _movementInputDetected: 0
   SprintDetected: 0
+--- !u!114 &249646377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249646369}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9655d3152a1d9504593bfcd3b91c63e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerPivot
+  pivot: {fileID: 1736236447}
+  scan: {fileID: 60995125}
+  positionWeight: 0
+  rotationWeight: 1
 --- !u!1 &362532370
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,8 +426,8 @@ Transform:
   m_GameObject: {fileID: 362532370}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 13.1368, z: -7.9}
-  m_LocalScale: {x: 10, y: 26.273998, z: 10}
+  m_LocalPosition: {x: 0, y: 12.3057, z: -7.9}
+  m_LocalScale: {x: 10, y: 31.120974, z: 10}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -1036,6 +1120,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1736236446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1736236447}
+  m_Layer: 0
+  m_Name: WallPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1736236447
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736236446}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1846624614
 GameObject:
   m_ObjectHideFlags: 0
@@ -1141,11 +1256,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6629fabd5f3899d4eb93b682315711af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpiderOrbitCamera
+  _inputReader: {fileID: 249646376}
   _target: {fileID: 1084855838}
   _focusOffset: {x: 0, y: 0, z: 0}
   _distance: 5
-  _sensitivity: 200
-  _pitchMin: -80
+  _sensitivity: 20
+  _pitchMin: -60
   _pitchMax: 80
   _upAlignSpeed: 8
   _collisionMask:
@@ -1257,3 +1373,4 @@ SceneRoots:
   - {fileID: 362532374}
   - {fileID: 1145259646}
   - {fileID: 249646373}
+  - {fileID: 1736236447}

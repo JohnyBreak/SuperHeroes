@@ -12,6 +12,9 @@ namespace UnitStateMachine
         public const int FallIdle = 4;
         public const int FallMove = 5;
         public const int Jump = 6;
+        public const int Wall = 7;
+        public const int WallIdle = 8;
+        public const int WallMove = 9;
     }
 
     public class StateFactory : IDisposable

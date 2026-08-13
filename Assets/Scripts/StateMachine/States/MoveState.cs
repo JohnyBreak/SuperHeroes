@@ -11,7 +11,6 @@ namespace UnitStateMachine.PlayerStates
         private readonly Transform _model;
         private float _rotationSpeed = 6f;
         private float _moveSpeed = 6f;
-        private int _movementHash = Animator.StringToHash("MovementSpeed");
         private Animator _animator;
         private readonly PlayerSharedData _sharedData;
 
@@ -70,7 +69,7 @@ namespace UnitStateMachine.PlayerStates
             }
             
             _animator?.SetFloat(
-                _movementHash,
+                _sharedData.MovementHash,
                 GetAnimationSpeed(),
                 0.75f,
                 Time.deltaTime);

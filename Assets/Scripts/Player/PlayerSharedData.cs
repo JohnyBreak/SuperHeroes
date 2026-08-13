@@ -10,6 +10,8 @@ public class PlayerSharedData
     public float Gravity { get; private set; } = -20;
     public float JumpGravity { get; private set; } = -9.8f;
     public float InitialJumpVelocity { get; private set; }
+    public readonly int MovementHash = Animator.StringToHash("MovementSpeed");
+    public readonly int CrouchHash = Animator.StringToHash("IsCrouching");
 
     public void Init()
     {

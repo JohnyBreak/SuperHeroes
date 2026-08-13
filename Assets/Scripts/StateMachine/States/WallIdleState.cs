@@ -2,29 +2,25 @@ using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 
 namespace UnitStateMachine.PlayerStates
 {
-    public class IdleState : BaseState
+    public class WallIdleState : BaseState
     {
         private readonly InputReader _inputReader;
-        private readonly UnitVelocity _velocity;
 
-        public IdleState(
+        public WallIdleState(
             StateMachine currentContext, 
             StateFactory unitStateFactory, 
-            InputReader inputReader,
-            UnitVelocity velocity) : base(currentContext, unitStateFactory)
+            InputReader inputReader) : base(currentContext, unitStateFactory)
         {
             _inputReader = inputReader;
-            _velocity = velocity;
         }
 
         public override int Key()
         {
-            return States.Idle;
+            return States.WallIdle;
         }
 
         protected override void OnEnterState()
         {
-            _velocity.ZeroXZVelocity();
         }
 
         protected override void OnUpdateState()
@@ -39,7 +35,7 @@ namespace UnitStateMachine.PlayerStates
         {
             if (_inputReader._movementInputDetected)
             {
-                SwitchState(_factory.Get(States.Move));
+                SwitchState(_factory.Get(States.WallMove));
             }
         }
 

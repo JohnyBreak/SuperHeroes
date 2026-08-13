@@ -9,6 +9,10 @@ public class Player : MonoBehaviour
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private MyCharacterController _controller;
     [SerializeField] private Transform _model;
+    [SerializeField] private LayerMask _wallDetectionMask;
+    [SerializeField] private PlayerPivot _playerPivot;
+    [SerializeField] private Transform _playerPivotT;
+    [SerializeField] private LayerMask _wallMovementMask;
     
     private StateMachine _stateMachine;
     private StateFactory _stateFactory;
@@ -28,7 +32,37 @@ public class Player : MonoBehaviour
             _inputReader,
             _velocity,
             _controller,
-            _sharedData);
+            _sharedData,
+            _model,
+            _wallMovementMask);
+
+        WallState wall = new WallState(
+            _stateMachine, 
+            _stateFactory,
+            _inputReader,
+            _velocity,
+            _model,
+            transform,
+            _playerPivot,
+            _wallMovementMask);
+        
+        WallIdleState wallIdle = new WallIdleState(
+            _stateMachine, 
+            _stateFactory,
+            _inputReader);
+        
+        WallMoveState wallMove = new WallMoveState(
+            _stateMachine,
+            _stateFactory,
+            _inputReader,
+            _playerPivotT,
+            _cameraTransform,
+            transform,
+            _model,
+            _sharedData,
+            null,
+            _velocity,
+            _wallMovementMask);
         
         MoveState move = new MoveState(
             _stateMachine, 
@@ -44,8 +78,7 @@ public class Player : MonoBehaviour
             _stateMachine, 
             _stateFactory, 
             _inputReader, 
-            _velocity,
-            _sharedData);
+            _velocity);
         
         FallState fall = new FallState(
             _stateMachine,

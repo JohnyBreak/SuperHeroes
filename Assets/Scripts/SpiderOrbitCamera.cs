@@ -1,7 +1,9 @@
+using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
 
 public class SpiderOrbitCamera : MonoBehaviour
 {
+    [SerializeField] private InputReader _inputReader;
     [SerializeField] private Transform _target;
     [SerializeField] private Vector3 _focusOffset = new Vector3(0f, 0.5f, 0f);
     [SerializeField] private float _distance = 5f;
@@ -23,6 +25,8 @@ public class SpiderOrbitCamera : MonoBehaviour
     private void Awake()
     {
         Debug.Assert(_target != null, $"{nameof(SpiderOrbitCamera)} needs a target.");
+        Debug.Assert(_inputReader != null, $"{nameof(SpiderOrbitCamera)} needs a inputReader.");
+
         if (_hideCursor)
         {
             Cursor.visible = false;
@@ -33,7 +37,6 @@ public class SpiderOrbitCamera : MonoBehaviour
     private void Start()
     {
         _orbitFrame = BuildOrbitFrame(_target.up, -_target.forward);
-return;
         Vector3 focusPoint = _target.TransformPoint(_focusOffset);
         Vector3 localOffset = Quaternion.Inverse(_orbitFrame) * (transform.position - focusPoint);
 
@@ -43,14 +46,14 @@ return;
             _yaw = Mathf.Atan2(direction.x, -direction.z) * Mathf.Rad2Deg;
             _pitch = Mathf.Asin(Mathf.Clamp(direction.y, -1f, 1f)) * Mathf.Rad2Deg;
             _pitch = Mathf.Clamp(_pitch, _pitchMin, _pitchMax);
-            _distance = localOffset.magnitude;
+            //_distance = localOffset.magnitude;
         }
     }
 
     private void LateUpdate()
     {
-        float mouseX = Input.GetAxis("Mouse X") * _sensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * _sensitivity * Time.deltaTime;
+        float mouseX = /*Input.GetAxis("Mouse X")*/_inputReader._mouseDelta.x * _sensitivity * Time.deltaTime;
+        float mouseY = /*Input.GetAxis("Mouse Y")*/_inputReader._mouseDelta.y * _sensitivity * Time.deltaTime;
 
         _yaw += mouseX;
         _pitch -= mouseY;

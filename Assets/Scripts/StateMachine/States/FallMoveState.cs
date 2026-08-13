@@ -37,7 +37,6 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            Debug.Log("enter move");
         }
 
         protected override void OnUpdateState()
