@@ -53,7 +53,7 @@ namespace UnitStateMachine
         
         protected void SwitchState(BaseState newState)
         {
-            ExitState();
+            ExitStates();
 
             newState.EnterState();
             

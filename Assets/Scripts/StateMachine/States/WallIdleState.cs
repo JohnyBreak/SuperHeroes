@@ -1,4 +1,4 @@
-using Synty.AnimationBaseLocomotion.Samples.InputSystem;
+using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
 {
@@ -21,6 +21,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
+            _sharedData.Velocity.SetVelocity(Vector3.zero);
         }
 
         protected override void OnUpdateState()

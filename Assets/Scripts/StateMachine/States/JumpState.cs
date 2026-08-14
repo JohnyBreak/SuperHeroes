@@ -6,6 +6,9 @@ namespace UnitStateMachine.PlayerStates
     {
         private readonly PlayerSharedData _sharedData;
         private bool _groundSnapToggleOnce;
+        private float _rotationSpeed = 6f;
+        private float _moveSpeed = 0.05f;
+        //private Vector3 _initialZXVelocity;
         
         public JumpState(
             StateMachine currentContext, 
@@ -22,6 +25,10 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
+            //var initialVelocity = _sharedData.Velocity.GetVelocity();
+            //initialVelocity.y = 0;
+            //_initialZXVelocity = initialVelocity;
+            
             _sharedData.Controller.ShouldSnapToGround = false;
             _sharedData.PreviousYVelocity = _sharedData.InitialJumpVelocity;
             _sharedData.Velocity.SetYVelocity(_sharedData.InitialJumpVelocity);
@@ -31,6 +38,39 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnUpdateState()
         {
+            bool hasInput =
+                _sharedData.InputReader._moveComposite.sqrMagnitude > 0.0001f;
+            Vector3 desiredVelocity = Vector3.zero;
+            
+            if (hasInput)
+            {
+                Vector3 input = new Vector3(
+                    _sharedData.InputReader._moveComposite.x,
+                    0f,
+                    _sharedData.InputReader._moveComposite.y);
+                Quaternion cameraRotation = Quaternion.Euler(
+                    0f,
+                    _sharedData.CameraTransform.eulerAngles.y,
+                    0f);
+                
+                Vector3 movementDirection =
+                    (cameraRotation * input).normalized;
+                
+                desiredVelocity = movementDirection * GetSpeed();
+                
+                RotateModel(
+                    movementDirection,
+                    Time.deltaTime);
+            }
+            
+            _sharedData.Animator?.SetFloat(
+                _sharedData.MovementHash,
+                GetAnimationSpeed(),
+                0.1f,
+                Time.deltaTime);
+            
+            _sharedData.Velocity.AddVelocity(desiredVelocity);
+            
             if (!_groundSnapToggleOnce && _sharedData.Velocity.GetVelocity().y <= 0)
             {
                 _sharedData.Controller.ShouldSnapToGround = true;
@@ -49,23 +89,7 @@ namespace UnitStateMachine.PlayerStates
                 _sharedData.MaxFallGravity);
             
             _sharedData.Velocity.SetYVelocity(appliedY);
-            return;
-            var current = _sharedData.Velocity.GetVelocity().y;
-            
-            if (current <= _sharedData.MaxFallGravity)
-            {
-                return;
-            }
-            
-            var additionalGravity = _sharedData.JumpGravity * Time.deltaTime;
-            
-            if ((current + additionalGravity) < _sharedData.MaxFallGravity)
-            {
-                additionalGravity = _sharedData.MaxFallGravity - current;
-            }
-            
-            _sharedData.Velocity.AddVelocity(Vector3.up * additionalGravity);
-        }
+         }
         
         protected override void ExitState()
         {
@@ -109,6 +133,30 @@ namespace UnitStateMachine.PlayerStates
             }
             
             SwitchState(_factory.Get(States.Wall));
+        }
+        
+        private void RotateModel(
+            Vector3 movementDirection,
+            float deltaTime)
+        {
+            Quaternion desiredRotation = Quaternion.LookRotation(
+                movementDirection,
+                Vector3.up);
+            
+            _sharedData.ModelT.rotation = Quaternion.Slerp(
+                _sharedData.ModelT.rotation,
+                desiredRotation,
+                _rotationSpeed * deltaTime);
+        }
+    
+        private float GetAnimationSpeed() 
+        {
+            return GetSpeed();
+        }
+
+        private float GetSpeed() 
+        {
+            return _moveSpeed;
         }
     }
 }

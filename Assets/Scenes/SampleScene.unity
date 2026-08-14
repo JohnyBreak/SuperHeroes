@@ -1269,6 +1269,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781272552}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &835159535 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3942465880874444955, guid: 9dbbdecc66a9b7140ae7faa1821d57a0, type: 3}
+  m_PrefabInstance: {fileID: 6337323189215695453}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e00b029906eec204b82c90899d4343a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &835159536 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1147972773117648476, guid: 9dbbdecc66a9b7140ae7faa1821d57a0, type: 3}
+  m_PrefabInstance: {fileID: 6337323189215695453}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d13027e663351458bb421e540e4982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WebSwingVerlet
 --- !u!1 &914462210
 GameObject:
   m_ObjectHideFlags: 3
@@ -2456,10 +2478,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6629fabd5f3899d4eb93b682315711af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpiderOrbitCamera
+  _inputReader: {fileID: 835159535}
   _target: {fileID: 1371841853}
   _focusOffset: {x: 0, y: 0, z: 0}
   _distance: 5
-  _sensitivity: 200
+  _sensitivity: 20
   _pitchMin: -65
   _pitchMax: 65
   _upAlignSpeed: 8
@@ -2795,10 +2818,18 @@ PrefabInstance:
       propertyPath: _cameraTransform
       value: 
       objectReference: {fileID: 1804223282}
+    - target: {fileID: 1147972773117648476, guid: 9dbbdecc66a9b7140ae7faa1821d57a0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1531806513796610455, guid: 9dbbdecc66a9b7140ae7faa1821d57a0, type: 3}
       propertyPath: _camera
       value: 
       objectReference: {fileID: 1804223282}
+    - target: {fileID: 1531806513796610455, guid: 9dbbdecc66a9b7140ae7faa1821d57a0, type: 3}
+      propertyPath: _webSwing
+      value: 
+      objectReference: {fileID: 835159536}
     - target: {fileID: 1531806513796610455, guid: 9dbbdecc66a9b7140ae7faa1821d57a0, type: 3}
       propertyPath: _swingAnchor
       value: 

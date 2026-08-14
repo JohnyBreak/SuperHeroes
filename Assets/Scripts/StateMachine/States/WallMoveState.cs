@@ -5,9 +5,8 @@ namespace UnitStateMachine.PlayerStates
     public class WallMoveState : BaseState
     {
         private readonly PlayerSharedData _sharedData;
-        private float _rotationSpeed = 6f;
         private float _moveSpeed = 6f;
-        private float _surfaceOffset = 0.05f;
+        private float _rotationSpeed = 6f;
         
         public WallMoveState(
             StateMachine currentContext, 
@@ -28,9 +27,6 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnUpdateState()
         {
-            StickToSurface();
-            AlignToSurface();
-
             Vector3 velocity = Vector3.zero;
 
             if (_sharedData.InputReader._moveComposite.sqrMagnitude > 0.0001f)
@@ -56,7 +52,7 @@ namespace UnitStateMachine.PlayerStates
             _sharedData.Animator?.SetFloat(
                 _sharedData.MovementHash,
                 GetAnimationSpeed(),
-                0.75f,
+                0.1f,
                 Time.deltaTime);
         }
 
@@ -74,42 +70,6 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void InitializeSubState()
         {
-        }
-        
-        private void StickToSurface()
-        {
-            Vector3 upDirection = _sharedData.PlayerT.up;
-            Vector3 downDirection = -upDirection;
-
-            Vector3 origin =
-                _sharedData.PlayerT.position + upDirection * 0.5f;
-
-            if (!Physics.Raycast(
-                    origin,
-                    downDirection,
-                    out RaycastHit hit,
-                    1f,
-                    _sharedData.WallMoveMask))
-            {
-                return;
-            }
-
-            _sharedData.PlayerT.position =
-                hit.point + upDirection * _surfaceOffset;
-        }
-
-        private void AlignToSurface()
-        {
-            Quaternion desiredRotation =
-                Quaternion.FromToRotation(
-                    _sharedData.PlayerT.up,
-                    _sharedData.Pivot.Pivot.up) *
-                _sharedData.PlayerT.rotation;
-
-            _sharedData.PlayerT.rotation = Quaternion.Lerp(
-                _sharedData.PlayerT.rotation,
-                desiredRotation,
-                _rotationSpeed * 2f * Time.deltaTime);
         }
         
         private Vector3 CalculateMoveDirection()

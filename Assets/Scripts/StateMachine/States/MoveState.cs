@@ -55,7 +55,7 @@ namespace UnitStateMachine.PlayerStates
             _sharedData.Animator?.SetFloat(
                 _sharedData.MovementHash,
                 GetAnimationSpeed(),
-                0.75f,
+                0.1f,
                 Time.deltaTime);
             
             _sharedData.Velocity.SetXZVelocity(desiredVelocity);

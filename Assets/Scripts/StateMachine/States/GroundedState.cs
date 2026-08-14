@@ -22,6 +22,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
+            _sharedData.Controller.ShouldSnapToGround = true;
             _sharedData.PreviousYVelocity = _groundedGravity;
             _sharedData.Velocity.SetVelocity(Vector3.up * _groundedGravity);
             _sharedData.InputReader.onJumpPerformed += OnJump;
