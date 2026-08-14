@@ -4,14 +4,14 @@ namespace UnitStateMachine.PlayerStates
 {
     public class WallIdleState : BaseState
     {
-        private readonly InputReader _inputReader;
+        private readonly PlayerSharedData _sharedData;
 
         public WallIdleState(
             StateMachine currentContext, 
             StateFactory unitStateFactory, 
-            InputReader inputReader) : base(currentContext, unitStateFactory)
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
-            _inputReader = inputReader;
+            _sharedData = sharedData;
         }
 
         public override int Key()
@@ -33,7 +33,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void CheckSwitchState()
         {
-            if (_inputReader._movementInputDetected)
+            if (_sharedData.InputReader._movementInputDetected)
             {
                 SwitchState(_factory.Get(States.WallMove));
             }

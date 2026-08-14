@@ -1,21 +1,17 @@
-using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
 {
     public class FallIdleState: BaseState
     {
-        private readonly InputReader _inputReader;
-        private readonly UnitVelocity _velocity;
-        
+        private readonly PlayerSharedData _sharedData;
+
         public FallIdleState(
             StateMachine currentContext, 
-            StateFactory unitStateFactory, 
-            InputReader inputReader,
-            UnitVelocity velocity) : base(currentContext, unitStateFactory)
+            StateFactory unitStateFactory,
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
-            _inputReader = inputReader;
-            _velocity = velocity;
+            _sharedData = sharedData;
         }
 
         public override int Key()
@@ -26,7 +22,7 @@ namespace UnitStateMachine.PlayerStates
         protected override void OnEnterState()
         {
             Debug.Log("enter idle");
-            _velocity.ZeroXZVelocity();
+            _sharedData.Velocity.ZeroXZVelocity();
         }
 
         protected override void OnUpdateState()
@@ -39,7 +35,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void CheckSwitchState()
         {
-            if (_inputReader._movementInputDetected)
+            if (_sharedData.InputReader._movementInputDetected)
             {
                 SwitchState(_factory.Get(States.FallMove));
             }

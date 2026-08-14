@@ -1,33 +1,17 @@
-using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
 {
     public class WallState : BaseState, IRootState
     {
-        private readonly InputReader _inputReader;
-        private readonly UnitVelocity _velocity;
-        private readonly Transform _model;
-        private readonly Transform _player;
-        private readonly PlayerPivot _playerPivot;
-        private readonly int _layerMask;
+        private readonly PlayerSharedData _sharedData;
 
         public WallState(
             StateMachine currentContext,
             StateFactory unitStateFactory,
-            InputReader inputReader,
-            UnitVelocity velocity,
-            Transform model,
-            Transform player,
-            PlayerPivot playerPivot,
-            int layerMask) : base(currentContext, unitStateFactory)
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
-            _inputReader = inputReader;
-            _velocity = velocity;
-            _model = model;
-            _player = player;
-            _playerPivot = playerPivot;
-            _layerMask = layerMask;
+            _sharedData = sharedData;
         }
 
         public override int Key()
@@ -37,22 +21,24 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            _playerPivot.SetPivotValues(_player.position);
-            _playerPivot.enabled = true;
-            _velocity.SetVelocity(Vector3.zero);
+            _sharedData.Velocity.SetVelocity(Vector3.zero);
             WallDetection();
-            _inputReader.onCrouchActivated += ReleaseWall;
+            _sharedData.InputReader.onCrouchActivated += ReleaseWall;
             SetSubState(_factory.Get(States.WallIdle));
         }
 
         protected override void OnUpdateState()
         {
+            if (IsFloorNormal())
+            {
+                ReleaseWall();
+            }
         }
 
         protected override void ExitState()
         {
-            _playerPivot.enabled = false;
-            _inputReader.onCrouchActivated -= ReleaseWall;
+            _sharedData.Pivot.enabled = false;
+            _sharedData.InputReader.onCrouchActivated -= ReleaseWall;
         }
 
         protected override void CheckSwitchState()
@@ -67,44 +53,60 @@ namespace UnitStateMachine.PlayerStates
         {
             base.OnDispose();
             
-            _inputReader.onCrouchActivated -= ReleaseWall;
+            _sharedData.InputReader.onCrouchActivated -= ReleaseWall;
+        }
+        
+        private bool IsFloorNormal()
+        {
+            float alignment = Vector3.Dot(
+                _sharedData.Pivot.Pivot.up,
+                Vector3.up);
+
+            return alignment > 0.85f;
         }
         
         private void WallDetection()
         {
-            Vector3 upDirection = _model.up;
+            Vector3 upDirection = _sharedData.ModelT.up;
 
             if (!Physics.SphereCast(
-                    _model.position + upDirection,
+                    _sharedData.ModelT.position + upDirection,
                     radius: 0.2f,
-                    _model.forward,
+                    _sharedData.ModelT.forward,
                     out RaycastHit hit,
                     1f,
-                    _layerMask))
+                    _sharedData.WallDetectMask))
             {
                 return;
             }
 
-            _model.forward = -hit.normal;
+            _sharedData.ModelT.forward = -hit.normal;
 
             Quaternion targetRotation =
                 Quaternion.FromToRotation(
-                    _player.up,
+                    _sharedData.PlayerT.up,
                     hit.normal) *
-                _player.rotation;
+                _sharedData.PlayerT.rotation;
 
-            _player.position = hit.point;
-            _player.rotation = targetRotation;
+            _sharedData.PlayerT.position = hit.point;
+            _sharedData.PlayerT.rotation = targetRotation;
+            
+            _sharedData.Pivot.SetPivotValues(_sharedData.PlayerT.position);
+            _sharedData.Pivot.enabled = true;
         }
         
         private void ReleaseWall()
         {
-            Vector3 releasePosition =
-                _player.position + _player.up * 0.5f;
+            _sharedData.PlayerT.rotation = Quaternion.identity;
 
-            _player.position = releasePosition;
-            _player.rotation = Quaternion.identity;
+            if (_sharedData.Controller.IsGrounded)
+            {
+                SwitchState(_factory.Get(States.Grounded));
+                return;
+            }
             
+            //Vector3 releasePosition = _player.position + _player.up * 0.5f;
+            //_player.position = releasePosition;
             SwitchState(_factory.Get(States.Air));
         }
     }

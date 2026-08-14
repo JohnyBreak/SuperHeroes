@@ -1,29 +1,18 @@
-using Synty.AnimationBaseLocomotion.Samples.InputSystem;
-using Unity.Mathematics.Geometry;
 using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
 {
     public class JumpState : BaseState, IRootState
     {
-        private readonly MyCharacterController _controller;
         private readonly PlayerSharedData _sharedData;
-        private readonly InputReader _inputReader;
-        private readonly UnitVelocity _velocity;
         private bool _groundSnapToggleOnce;
         
         public JumpState(
             StateMachine currentContext, 
             StateFactory unitStateFactory,
-            InputReader inputReader,
-            UnitVelocity velocity,
-            MyCharacterController controller,
             PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
-            _controller = controller;
             _sharedData = sharedData;
-            _inputReader = inputReader;
-            _velocity = velocity;
         }
 
         public override int Key()
@@ -33,22 +22,21 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            _controller.ShouldSnapToGround = false;
+            _sharedData.Controller.ShouldSnapToGround = false;
             _sharedData.PreviousYVelocity = _sharedData.InitialJumpVelocity;
-            _velocity.SetYVelocity(_sharedData.InitialJumpVelocity);
+            _sharedData.Velocity.SetYVelocity(_sharedData.InitialJumpVelocity);
             _groundSnapToggleOnce = false;
-            // apply jump force
+            _sharedData.InputReader.onWallCheckPerformed += WallDetection;
         }
 
         protected override void OnUpdateState()
         {
-            if (!_groundSnapToggleOnce && _velocity.GetVelocity().y <= 0)
+            if (!_groundSnapToggleOnce && _sharedData.Velocity.GetVelocity().y <= 0)
             {
-                _controller.ShouldSnapToGround = true;
+                _sharedData.Controller.ShouldSnapToGround = true;
                 _groundSnapToggleOnce = true;
             }
 
-            // apply gravity
             HandleGravity();
         }
         
@@ -60,9 +48,9 @@ namespace UnitStateMachine.PlayerStates
             float appliedY = Mathf.Max((previousYVelocity + _sharedData.PreviousYVelocity) * .5f,
                 _sharedData.MaxFallGravity);
             
-            _velocity.SetYVelocity(appliedY);
+            _sharedData.Velocity.SetYVelocity(appliedY);
             return;
-            var current = _velocity.GetVelocity().y;
+            var current = _sharedData.Velocity.GetVelocity().y;
             
             if (current <= _sharedData.MaxFallGravity)
             {
@@ -76,18 +64,20 @@ namespace UnitStateMachine.PlayerStates
                 additionalGravity = _sharedData.MaxFallGravity - current;
             }
             
-            _velocity.AddVelocity(Vector3.up * additionalGravity);
+            _sharedData.Velocity.AddVelocity(Vector3.up * additionalGravity);
         }
         
         protected override void ExitState()
         {
             _groundSnapToggleOnce = false;
+            _sharedData.Controller.ShouldSnapToGround = true;
+            _sharedData.InputReader.onWallCheckPerformed -= WallDetection;
         }
 
         protected override void CheckSwitchState()
         {
             // if current Y velocity newar 0 switch to fall
-            if ( _velocity.GetVelocity().y <= 0 && _controller.IsGrounded)
+            if (_sharedData.Velocity.GetVelocity().y <= 0 && _sharedData.Controller.IsGrounded)
             {
                 SwitchState(_factory.Get(States.Grounded));
             }
@@ -95,6 +85,30 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void InitializeSubState()
         {
+        }
+        
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            _sharedData.InputReader.onWallCheckPerformed -= WallDetection;
+        }
+        
+        private void WallDetection()
+        {
+            Vector3 upDirection = _sharedData.ModelT.up;
+
+            if (!Physics.SphereCast( 
+                    _sharedData.ModelT.position + upDirection,
+                    radius: 0.2f,
+                    _sharedData.ModelT.forward,
+                    out RaycastHit hit,
+                    1f,
+                    _sharedData.WallDetectMask))
+            {
+                return;
+            }
+            
+            SwitchState(_factory.Get(States.Wall));
         }
     }
 }

@@ -1,26 +1,16 @@
-using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
 {
     public class FallState : BaseState, IRootState
     {
-        private readonly MyCharacterController _controller;
         private readonly PlayerSharedData _sharedData;
-        private readonly InputReader _inputReader;
-        private readonly UnitVelocity _velocity;
         
         public FallState(
             StateMachine currentContext, 
             StateFactory unitStateFactory,
-            UnitVelocity velocity,
-            InputReader inputReader,
-            MyCharacterController controller,
             PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
-            _velocity = velocity;
-            _inputReader = inputReader;
-            _controller = controller;
             _sharedData = sharedData;
         }
 
@@ -31,6 +21,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
+            _sharedData.InputReader.onWallCheckPerformed += WallDetection;
         }
 
         protected override void OnUpdateState()
@@ -46,47 +37,54 @@ namespace UnitStateMachine.PlayerStates
             float appliedY = Mathf.Max((previousYVelocity + _sharedData.PreviousYVelocity) * .5f,
                 _sharedData.MaxFallGravity);
             
-            //_velocity.AddVelocity(Vector3.up * appliedY);
-            _velocity.SetYVelocity(appliedY);
-            return;
-            var current = _velocity.GetVelocity().y;
-            
-            if (current <= _sharedData.MaxFallGravity)
-            {
-                return;
-            }
-            
-            var additionalGravity = _sharedData.Gravity * Time.deltaTime;
-            
-            if ((current + additionalGravity) < _sharedData.MaxFallGravity)
-            {
-                additionalGravity = _sharedData.MaxFallGravity - current;
-            }
-            
-            _velocity.AddVelocity(Vector3.up * additionalGravity);
+            _sharedData.Velocity.SetYVelocity(appliedY);
         }
 
         protected override void ExitState()
         {
-            
+            _sharedData.InputReader.onWallCheckPerformed -= WallDetection;
         }
 
         protected override void CheckSwitchState()
         {
-            if (_controller.IsGrounded)
+            if (_sharedData.Controller.IsGrounded)
             {
                 SwitchState(_factory.Get(States.Grounded));
             }
         }
-
+        
         protected override void InitializeSubState()
         {
-            if (_inputReader._movementInputDetected)
+            if (_sharedData.InputReader._movementInputDetected)
             {
                 SetSubState(_factory.Get(States.FallMove));
                 return;
             }
             SetSubState(_factory.Get(States.FallIdle));
+        }
+        
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            _sharedData.InputReader.onWallCheckPerformed -= WallDetection;
+        }
+        
+        private void WallDetection()
+        {
+            Vector3 upDirection = _sharedData.ModelT.up;
+
+            if (!Physics.SphereCast( 
+                    _sharedData.ModelT.position + upDirection,
+                    radius: 0.2f,
+                    _sharedData.ModelT.forward,
+                    out RaycastHit hit,
+                    1f,
+                    _sharedData.WallDetectMask))
+            {
+                return;
+            }
+
+            SwitchState(_factory.Get(States.Wall));
         }
     }
 }

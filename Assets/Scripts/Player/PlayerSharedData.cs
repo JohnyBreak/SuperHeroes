@@ -1,3 +1,4 @@
+using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
 
 public class PlayerSharedData
@@ -13,8 +14,40 @@ public class PlayerSharedData
     public readonly int MovementHash = Animator.StringToHash("MovementSpeed");
     public readonly int CrouchHash = Animator.StringToHash("IsCrouching");
 
-    public void Init()
+    public readonly MyCharacterController Controller;
+    public readonly PlayerPivot Pivot;
+    public readonly UnitVelocity Velocity;
+    public readonly InputReader InputReader;
+    public readonly Animator Animator;
+    public readonly Transform ModelT;
+    public readonly Transform PlayerT;
+    public readonly Transform CameraTransform;
+    public readonly int WallDetectMask;
+    public readonly int WallMoveMask;
+    
+    public PlayerSharedData(
+        UnitVelocity unitVelocity,
+        MyCharacterController controller,
+        PlayerPivot pivot,
+        Transform player,
+        Transform model,
+        InputReader inputReader,
+        Animator animator,
+        Transform cameraTransform,
+        int wallDetectMask, 
+        int wallMoveMask)
     {
+        Velocity = unitVelocity;
+        Controller = controller;
+        Pivot = pivot;
+        PlayerT = player;
+        ModelT = model;
+        CameraTransform = cameraTransform;
+        InputReader = inputReader;
+        Animator = animator;
+        WallDetectMask = wallDetectMask;
+        WallMoveMask = wallMoveMask;
+        
         SetupVariables();
     }
     

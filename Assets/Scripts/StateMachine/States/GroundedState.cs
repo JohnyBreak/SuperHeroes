@@ -1,34 +1,18 @@
-using Synty.AnimationBaseLocomotion.Samples.InputSystem;
 using UnityEngine;
 
 namespace UnitStateMachine.PlayerStates
 {
     public class GroundedState : BaseState, IRootState
     {
-        private readonly InputReader _inputReader;
-        private readonly UnitVelocity _velocity;
-        private readonly MyCharacterController _controller;
         private readonly PlayerSharedData _sharedData;
-        private readonly Transform _model;
-        private readonly int _layerMask;
         private float _groundedGravity = -0.6f;
         
         public GroundedState(
             StateMachine currentContext, 
             StateFactory unitStateFactory,
-            InputReader inputReader,
-            UnitVelocity velocity,
-            MyCharacterController controller,
-            PlayerSharedData sharedData,
-            Transform model,
-            int layerMask) : base(currentContext, unitStateFactory)
+            PlayerSharedData sharedData) : base(currentContext, unitStateFactory)
         {
-            _inputReader = inputReader;
-            _velocity = velocity;
-            _controller = controller;
             _sharedData = sharedData;
-            _model = model;
-            _layerMask = layerMask;
         }
 
         public override int Key()
@@ -39,9 +23,9 @@ namespace UnitStateMachine.PlayerStates
         protected override void OnEnterState()
         {
             _sharedData.PreviousYVelocity = _groundedGravity;
-            _velocity.SetVelocity(Vector3.up * _groundedGravity);
-            _inputReader.onJumpPerformed += OnJump;
-            _inputReader.onWallCheckPerformed += WallDetection;
+            _sharedData.Velocity.SetVelocity(Vector3.up * _groundedGravity);
+            _sharedData.InputReader.onJumpPerformed += OnJump;
+            _sharedData.InputReader.onWallCheckPerformed += WallDetection;
         }
 
         protected override void OnUpdateState()
@@ -50,13 +34,13 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void ExitState()
         {
-            _inputReader.onJumpPerformed -= OnJump;
-            _inputReader.onWallCheckPerformed -= WallDetection;
+            _sharedData.InputReader.onJumpPerformed -= OnJump;
+            _sharedData.InputReader.onWallCheckPerformed -= WallDetection;
         }
 
         protected override void CheckSwitchState()
         {
-            if (!_controller.IsGrounded)
+            if (!_sharedData.Controller.IsGrounded)
             {
                 SwitchState(_factory.Get(States.Air));
             }
@@ -64,7 +48,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void InitializeSubState()
         {
-            if (_inputReader._movementInputDetected)
+            if (_sharedData.InputReader._movementInputDetected)
             {
                 SetSubState(_factory.Get(States.Move));
                 return;
@@ -75,8 +59,8 @@ namespace UnitStateMachine.PlayerStates
         protected override void OnDispose()
         {
             base.OnDispose();
-            _inputReader.onJumpPerformed -= OnJump;
-            _inputReader.onWallCheckPerformed -= WallDetection;
+            _sharedData.InputReader.onJumpPerformed -= OnJump;
+            _sharedData.InputReader.onWallCheckPerformed -= WallDetection;
         }
 
         private void OnJump()
@@ -86,15 +70,15 @@ namespace UnitStateMachine.PlayerStates
 
         private void WallDetection()
         {
-            Vector3 upDirection = _model.up;
+            Vector3 upDirection = _sharedData.ModelT.up;
 
             if (!Physics.SphereCast( 
-                    _model.position + upDirection,
+                    _sharedData.ModelT.position + upDirection,
                     radius: 0.2f,
-                    _model.forward,
+                    _sharedData.ModelT.forward,
                     out RaycastHit hit,
                     1f,
-                    _layerMask))
+                    _sharedData.WallDetectMask))
             {
                 return;
             }
