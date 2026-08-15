@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a939b99d-0117-43e6-906f-a759e76b2f85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/StateScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/StateScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/WebSwingVerlet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeiroHelp/WebSwingVerlet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/StateFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/StateFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Pendulum.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Pendulum.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +119,7 @@
       <workItem from="1786628042158" duration="925000" />
       <workItem from="1786631898680" duration="10780000" />
       <workItem from="1786734301853" duration="9038000" />
-      <workItem from="1786818152067" duration="9138000" />
+      <workItem from="1786818152067" duration="9397000" />
     </task>
     <servers />
   </component>
