@@ -6,6 +6,7 @@ namespace UnitStateMachine.PlayerStates
     {
         private readonly PlayerSharedData _sharedData;
         private float _groundedGravity = -0.6f;
+        private float _moveSpeed = 6f;
         
         public GroundedState(
             StateMachine currentContext, 
@@ -22,6 +23,8 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
+            _sharedData.Animator?.CrossFadeInFixedTime(_sharedData.MovementHash, 0.1f);
+            
             _sharedData.Controller.ShouldSnapToGround = true;
             _sharedData.PreviousYVelocity = _groundedGravity;
             _sharedData.Velocity.SetVelocity(Vector3.up * _groundedGravity);
@@ -31,6 +34,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnUpdateState()
         {
+            UpdateAnimation();
         }
 
         protected override void ExitState()
@@ -79,17 +83,35 @@ namespace UnitStateMachine.PlayerStates
                     _sharedData.ModelT.forward,
                     out RaycastHit hit,
                     1f,
-                    _sharedData.WallDetectMask))
+                    _sharedData.WallMask))
             {
                 return;
             }
 
             SwitchState(_factory.Get(States.Wall));
-            
-            //StartChange(
-            //    CharacterLocomotionMode.Wall,
-            //    hit.point,
-            //    targetRotation);
+        }
+        
+        private void UpdateAnimation()
+        {
+            _sharedData.Animator?.SetFloat(
+                _sharedData.MovementSpeedHash,
+                GetAnimationSpeed(),
+                0.1f,
+                Time.deltaTime);
+        }
+        
+        private float GetAnimationSpeed()
+        {
+            return _sharedData.InputReader._movementInputDetected
+                ? GetSpeed()
+                : 0f;
+        }
+        
+        private float GetSpeed()
+        {
+            return _sharedData.InputReader.SprintDetected
+                ? _moveSpeed * 2f
+                : _moveSpeed;
         }
     }
 }

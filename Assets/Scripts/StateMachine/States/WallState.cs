@@ -7,6 +7,7 @@ namespace UnitStateMachine.PlayerStates
         private readonly PlayerSharedData _sharedData;
         private float _surfaceOffset = 0.05f;
         private float _rotationSpeed = 6f;
+        private float _moveSpeed = 6f;
 
         public WallState(
             StateMachine currentContext,
@@ -23,6 +24,8 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
+            _sharedData.Animator?.CrossFadeInFixedTime(_sharedData.WallCrawlingHash, 0.1f);
+            
             _sharedData.Velocity.SetVelocity(Vector3.zero);
             WallDetection();
             _sharedData.InputReader.onCrouchActivated += ReleaseWall;
@@ -32,6 +35,14 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnUpdateState()
         {
+            UpdateAnimation();
+            
+            if (DetectGround())
+            {
+                SwitchState(_factory.Get(States.WallToGroundTransition));
+                return;
+            }
+
             if (IsFloorNormal())
             {
                 ReleaseWall();
@@ -39,16 +50,12 @@ namespace UnitStateMachine.PlayerStates
             StickToSurface();
             AlignToSurface();
         }
-
+        
         protected override void ExitState()
         {
             _sharedData.Pivot.enabled = false;
             _sharedData.InputReader.onCrouchActivated -= ReleaseWall;
             _sharedData.Controller.ShouldSnapToGround = true;
-
-
-            RotateTo(Vector3.up);
-
         }
 
         protected override void CheckSwitchState()
@@ -65,7 +72,17 @@ namespace UnitStateMachine.PlayerStates
             
             _sharedData.InputReader.onCrouchActivated -= ReleaseWall;
         }
-        
+
+        private bool DetectGround()
+        {
+            var origin = _sharedData.PlayerT.position + _sharedData.PlayerT.up;
+            var direction = _sharedData.ModelT.forward;
+            
+            Debug.DrawRay(origin, direction, Color.blueViolet, 0.1f);
+            
+            return Physics.SphereCast(origin, 0.2f, direction, out var hit, 1f, _sharedData.GroundMask);
+        }
+
         private bool IsFloorNormal()
         {
             float alignment = Vector3.Dot(
@@ -88,7 +105,7 @@ namespace UnitStateMachine.PlayerStates
                     downDirection,
                     out RaycastHit hit,
                     1f,
-                    _sharedData.WallMoveMask))
+                    _sharedData.WallMask))
             {
                 return;
             }
@@ -121,7 +138,7 @@ namespace UnitStateMachine.PlayerStates
                     _sharedData.ModelT.forward,
                     out RaycastHit hit,
                     1f,
-                    _sharedData.WallDetectMask))
+                    _sharedData.WallMask))
             {
                 return;
             }
@@ -158,6 +175,29 @@ namespace UnitStateMachine.PlayerStates
                 _sharedData.PlayerT.rotation;
             
             _sharedData.PlayerT.rotation = targetRotation;
+        }
+        
+        private void UpdateAnimation()
+        {
+            _sharedData.Animator?.SetFloat(
+                _sharedData.MovementSpeedHash,
+                GetAnimationSpeed(),
+                0.1f,
+                Time.deltaTime);
+        }
+        
+        private float GetAnimationSpeed()
+        {
+            return _sharedData.InputReader._movementInputDetected
+                ? GetSpeed()
+                : 0f;
+        }
+        
+        private float GetSpeed()
+        {
+            return _sharedData.InputReader.SprintDetected
+                ? _moveSpeed * 2f
+                : _moveSpeed;
         }
     }
 }

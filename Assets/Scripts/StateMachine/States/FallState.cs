@@ -21,6 +21,7 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
+            _sharedData.Animator?.CrossFadeInFixedTime(_sharedData.FallHash, 0.1f);
             _sharedData.InputReader.onWallCheckPerformed += WallDetection;
         }
 
@@ -79,7 +80,7 @@ namespace UnitStateMachine.PlayerStates
                     _sharedData.ModelT.forward,
                     out RaycastHit hit,
                     1f,
-                    _sharedData.WallDetectMask))
+                    _sharedData.WallMask))
             {
                 return;
             }

@@ -52,12 +52,6 @@ namespace UnitStateMachine.PlayerStates
                     Time.deltaTime);
             }
             
-            _sharedData.Animator?.SetFloat(
-                _sharedData.MovementHash,
-                GetAnimationSpeed(),
-                0.1f,
-                Time.deltaTime);
-            
             _sharedData.Velocity.SetXZVelocity(desiredVelocity);
         }
 
@@ -89,11 +83,6 @@ namespace UnitStateMachine.PlayerStates
                 _sharedData.ModelT.rotation,
                 desiredRotation,
                 _rotationSpeed * deltaTime);
-        }
-    
-        private float GetAnimationSpeed() 
-        {
-            return (_sharedData.InputReader._movementInputDetected) ? GetSpeed() : 0;
         }
 
         private float GetSpeed() 

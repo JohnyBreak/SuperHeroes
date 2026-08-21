@@ -9,9 +9,10 @@ public class Player : MonoBehaviour
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private MyCharacterController _controller;
     [SerializeField] private Transform _model;
-    [SerializeField] private LayerMask _wallDetectionMask;
+    [SerializeField] private LayerMask _wallMask;
     [SerializeField] private PlayerPivot _playerPivot;
-    [SerializeField] private LayerMask _wallMovementMask;
+    [SerializeField] private LayerMask _groundMask;
+    [SerializeField] private Animator _animator;
     
     private StateMachine _stateMachine;
     private StateFactory _stateFactory;
@@ -30,16 +31,21 @@ public class Player : MonoBehaviour
             transform,
             _model, 
             _inputReader,
-            null,
+            _animator,
             _cameraTransform,
-            _wallDetectionMask,
-            _wallMovementMask);
+            _wallMask,
+            _groundMask);
         
         GroundedState grounded = new GroundedState(
             _stateMachine, 
             _stateFactory, 
             _sharedData);
-
+        
+        WallToGroundTransitionState wallToGroundTransition = new WallToGroundTransitionState(
+            _stateMachine, 
+            _stateFactory, 
+            _sharedData);
+        
         WallState wall = new WallState(
             _stateMachine, 
             _stateFactory,

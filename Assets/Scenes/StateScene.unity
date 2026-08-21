@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!95 &6655294 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5143761604709991483, guid: f4ec8224b765b064f8e5ca25ef130dab, type: 3}
+  m_PrefabInstance: {fileID: 130103128}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &60995124
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,13 +347,14 @@ MonoBehaviour:
   _inputReader: {fileID: 249646376}
   _controller: {fileID: 249646374}
   _model: {fileID: 130103129}
-  _wallDetectionMask:
+  _wallMask:
     serializedVersion: 2
     m_Bits: 64
   _playerPivot: {fileID: 249646377}
-  _wallMovementMask:
+  _groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 256
+  _animator: {fileID: 6655294}
 --- !u!114 &249646376
 MonoBehaviour:
   m_ObjectHideFlags: 0

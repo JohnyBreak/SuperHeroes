@@ -11,9 +11,22 @@ public class PlayerSharedData
     public float Gravity { get; private set; } = -20;
     public float JumpGravity { get; private set; } = -9.8f;
     public float InitialJumpVelocity { get; private set; }
-    public readonly int MovementHash = Animator.StringToHash("MovementSpeed");
-    public readonly int CrouchHash = Animator.StringToHash("IsCrouching");
-
+    
+    public readonly int MovementHash = Animator.StringToHash("Movement");
+    public readonly int WallCrawlingHash = Animator.StringToHash("WallCrawling");
+    public readonly int TPoseHash = Animator.StringToHash("TPose");
+    public readonly int JumpHash = Animator.StringToHash("Jump");
+    public readonly int FallHash = Animator.StringToHash("Fall");
+    public readonly int MovementSpeedHash = Animator.StringToHash("MovementSpeed");
+    
+    //public readonly int MovementHash = Animator.StringToHash("MovementSpeed");
+    //public readonly int CrouchHash = Animator.StringToHash("IsCrouching");
+    //public readonly int YVelocityHash = Animator.StringToHash("YVelocity");
+    //public readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
+    //public readonly int TPoseHash = Animator.StringToHash("TPose");
+    //public readonly int JumpHash = Animator.StringToHash("Jump");
+    //public readonly int IsFallingHash = Animator.StringToHash("IsFalling");
+    
     public readonly MyCharacterController Controller;
     public readonly PlayerPivot Pivot;
     public readonly UnitVelocity Velocity;
@@ -22,8 +35,8 @@ public class PlayerSharedData
     public readonly Transform ModelT;
     public readonly Transform PlayerT;
     public readonly Transform CameraTransform;
-    public readonly int WallDetectMask;
-    public readonly int WallMoveMask;
+    public readonly int WallMask;
+    public readonly int GroundMask;
     
     public PlayerSharedData(
         UnitVelocity unitVelocity,
@@ -34,8 +47,8 @@ public class PlayerSharedData
         InputReader inputReader,
         Animator animator,
         Transform cameraTransform,
-        int wallDetectMask, 
-        int wallMoveMask)
+        int wallMask, 
+        int groundMask)
     {
         Velocity = unitVelocity;
         Controller = controller;
@@ -45,8 +58,8 @@ public class PlayerSharedData
         CameraTransform = cameraTransform;
         InputReader = inputReader;
         Animator = animator;
-        WallDetectMask = wallDetectMask;
-        WallMoveMask = wallMoveMask;
+        WallMask = wallMask;
+        GroundMask = groundMask;
         
         SetupVariables();
     }

@@ -48,12 +48,6 @@ namespace UnitStateMachine.PlayerStates
             }
 
             _sharedData.Velocity.SetVelocity(velocity);
-            
-            _sharedData.Animator?.SetFloat(
-                _sharedData.MovementHash,
-                GetAnimationSpeed(),
-                0.1f,
-                Time.deltaTime);
         }
 
         protected override void ExitState()
@@ -89,13 +83,6 @@ namespace UnitStateMachine.PlayerStates
             return direction.normalized;
         }
         
-        private float GetAnimationSpeed()
-        {
-            return _sharedData.InputReader._movementInputDetected
-                ? GetSpeed()
-                : 0f;
-        }
-
         private float GetSpeed()
         {
             return _sharedData.InputReader.SprintDetected

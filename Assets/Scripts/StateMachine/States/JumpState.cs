@@ -25,9 +25,8 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
-            //var initialVelocity = _sharedData.Velocity.GetVelocity();
-            //initialVelocity.y = 0;
-            //_initialZXVelocity = initialVelocity;
+            
+            _sharedData.Animator?.CrossFadeInFixedTime(_sharedData.JumpHash, 0.1f);
             
             _sharedData.Controller.ShouldSnapToGround = false;
             _sharedData.PreviousYVelocity = _sharedData.InitialJumpVelocity;
@@ -63,18 +62,14 @@ namespace UnitStateMachine.PlayerStates
                     Time.deltaTime);
             }
             
-            _sharedData.Animator?.SetFloat(
-                _sharedData.MovementHash,
-                GetAnimationSpeed(),
-                0.1f,
-                Time.deltaTime);
-            
             _sharedData.Velocity.AddVelocity(desiredVelocity);
             
             if (!_groundSnapToggleOnce && _sharedData.Velocity.GetVelocity().y <= 0)
             {
                 _sharedData.Controller.ShouldSnapToGround = true;
                 _groundSnapToggleOnce = true;
+                
+                _sharedData.Animator?.CrossFadeInFixedTime(_sharedData.FallHash, 0.1f);
             }
 
             HandleGravity();
@@ -127,7 +122,7 @@ namespace UnitStateMachine.PlayerStates
                     _sharedData.ModelT.forward,
                     out RaycastHit hit,
                     1f,
-                    _sharedData.WallDetectMask))
+                    _sharedData.WallMask))
             {
                 return;
             }
