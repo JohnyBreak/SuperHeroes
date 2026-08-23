@@ -8,7 +8,9 @@ namespace UnitStateMachine.PlayerStates
         private float _maxDistance = 10;
         private float _steeringSpeed = 2;
         private Vector3 _previousPosition;
+        private Vector3 _previousVelocity;
         private bool _connected;
+        private Vector3 _releaseVelocity;
 
         public SwingState(
             StateMachine currentContext,
@@ -51,6 +53,7 @@ namespace UnitStateMachine.PlayerStates
         {
             _connected = false;
             _sharedData.LineRenderer.enabled = false;
+            _sharedData.PreviousYVelocity = _releaseVelocity.y;
         }
 
         protected override void CheckSwitchState()
@@ -100,6 +103,7 @@ namespace UnitStateMachine.PlayerStates
             
             Vector3 displacement = predictedPosition - currentPosition;
             _previousPosition = currentPosition;
+            _releaseVelocity = displacement / Time.deltaTime;
             _sharedData.Velocity.SetVelocity(displacement / Time.deltaTime);
         }
 

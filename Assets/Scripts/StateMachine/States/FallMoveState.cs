@@ -7,7 +7,7 @@ namespace UnitStateMachine.PlayerStates
     {
         private readonly PlayerSharedData _sharedData;
         private float _rotationSpeed = 3f;
-        private float _moveSpeed = 2.5f;
+        private float _moveSpeed = 0.5f;
         private int _movementHash = Animator.StringToHash("MovementSpeed");
         
         public FallMoveState(
@@ -59,7 +59,7 @@ namespace UnitStateMachine.PlayerStates
                 0.75f,
                 Time.deltaTime);
             
-            _sharedData.Velocity.SetXZVelocity(desiredVelocity);
+            _sharedData.Velocity.AddVelocity(desiredVelocity);
         }
 
         protected override void ExitState()

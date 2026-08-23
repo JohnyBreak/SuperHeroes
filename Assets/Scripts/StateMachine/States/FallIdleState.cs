@@ -22,7 +22,7 @@ namespace UnitStateMachine.PlayerStates
         protected override void OnEnterState()
         {
             Debug.Log("enter idle");
-            _sharedData.Velocity.ZeroXZVelocity();
+            //_sharedData.Velocity.ZeroXZVelocity();
         }
 
         protected override void OnUpdateState()
