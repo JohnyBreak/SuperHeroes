@@ -150,7 +150,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": ""Aim"",
                     ""type"": ""Button"",
                     ""id"": ""e440026d-b50a-4df1-ba03-48302673e522"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Web"",
+                    ""type"": ""Button"",
+                    ""id"": ""0d34af38-428b-4876-a6c1-1ffbd7923a65"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -398,7 +407,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2d594f48-6585-4401-95f6-10f27afb0d84"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
@@ -414,6 +423,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""440da16c-5082-470c-8d73-6da2f59fb28b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Web"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f159ac5-1926-4b91-b6e7-351833d9e379"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Web"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -503,6 +534,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_ToggleWalk = m_Player.FindAction("ToggleWalk", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
+        m_Player_Web = m_Player.FindAction("Web", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
     }
@@ -592,6 +624,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_ToggleWalk;
     private readonly InputAction m_Player_Aim;
+    private readonly InputAction m_Player_Web;
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_LockOn;
     /// <summary>
@@ -633,6 +666,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Aim".
         /// </summary>
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Web".
+        /// </summary>
+        public InputAction @Web => m_Wrapper.m_Player_Web;
         /// <summary>
         /// Provides access to the underlying input action "Player/Crouch".
         /// </summary>
@@ -688,6 +725,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
+            @Web.started += instance.OnWeb;
+            @Web.performed += instance.OnWeb;
+            @Web.canceled += instance.OnWeb;
             @Crouch.started += instance.OnCrouch;
             @Crouch.performed += instance.OnCrouch;
             @Crouch.canceled += instance.OnCrouch;
@@ -726,6 +766,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
+            @Web.started -= instance.OnWeb;
+            @Web.performed -= instance.OnWeb;
+            @Web.canceled -= instance.OnWeb;
             @Crouch.started -= instance.OnCrouch;
             @Crouch.performed -= instance.OnCrouch;
             @Crouch.canceled -= instance.OnCrouch;
@@ -847,6 +890,13 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAim(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Web" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnWeb(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Crouch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

@@ -39,6 +39,10 @@ namespace Synty.AnimationBaseLocomotion.Samples.InputSystem
         public Action onSprintDeactivated;
 
         public Action onWalkToggled;
+        
+        public bool WebDetected;
+        public Action onWebActivated;
+        public Action onWebDeactivated;
 
         /// <inheritdoc cref="OnEnable" />
         private void OnEnable()
@@ -130,6 +134,20 @@ namespace Synty.AnimationBaseLocomotion.Samples.InputSystem
             {
                 SprintDetected = false;
                 onSprintDeactivated?.Invoke();
+            }
+        }
+
+        public void OnWeb(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                WebDetected = true;
+                onWebActivated?.Invoke();
+            }
+            else if (context.canceled)
+            {
+                WebDetected = false;
+                onWebDeactivated?.Invoke();
             }
         }
 

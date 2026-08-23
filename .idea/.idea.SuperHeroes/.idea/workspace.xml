@@ -8,15 +8,15 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/New Animator Controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/New Animator Controller.controller" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/StateScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/StateScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pendulum/Pendulum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pendulum/Pendulum.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/Player.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerSharedData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerSharedData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/StateFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/StateFactory.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/FallState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/FallState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/GroundedState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/GroundedState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/JumpState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/JumpState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/MoveState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/MoveState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/WallMoveState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/WallMoveState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/WallState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/WallState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/SwingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/SwingState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Synty/AnimationBaseLocomotion/Samples/Scripts/InputSystem/Controls.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Synty/AnimationBaseLocomotion/Samples/Scripts/InputSystem/Controls.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Synty/AnimationBaseLocomotion/Samples/Scripts/InputSystem/Controls.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Synty/AnimationBaseLocomotion/Samples/Scripts/InputSystem/Controls.inputactions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Synty/AnimationBaseLocomotion/Samples/Scripts/InputSystem/InputReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Synty/AnimationBaseLocomotion/Samples/Scripts/InputSystem/InputReader.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,10 +99,10 @@
       <option name="useMixedMode" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="9928">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="6584">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="9928" />
+      <option name="pid" value="6584" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -134,7 +134,8 @@
       <workItem from="1786631898680" duration="10780000" />
       <workItem from="1786734301853" duration="9038000" />
       <workItem from="1786818152067" duration="9397000" />
-      <workItem from="1787325904696" duration="8952000" />
+      <workItem from="1787325904696" duration="13717000" />
+      <workItem from="1787515342028" duration="3604000" />
     </task>
     <servers />
   </component>

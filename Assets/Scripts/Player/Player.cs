@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerPivot _playerPivot;
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private Animator _animator;
+    [SerializeField] private LineRenderer _lineRenderer;
+    [SerializeField] private Transform _swingRoot;
     
     private StateMachine _stateMachine;
     private StateFactory _stateFactory;
@@ -34,7 +36,14 @@ public class Player : MonoBehaviour
             _animator,
             _cameraTransform,
             _wallMask,
-            _groundMask);
+            _groundMask,
+            _lineRenderer,
+            _swingRoot);
+
+        SwingState swing = new SwingState(
+            _stateMachine, 
+            _stateFactory, 
+            _sharedData);
         
         GroundedState grounded = new GroundedState(
             _stateMachine, 
@@ -103,6 +112,6 @@ public class Player : MonoBehaviour
 
     private void OnDestroy()
     {
-        _stateFactory.Dispose();
+        _stateFactory?.Dispose();
     }
 }

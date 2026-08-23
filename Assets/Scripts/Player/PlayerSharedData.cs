@@ -37,9 +37,10 @@ public class PlayerSharedData
     public readonly Transform CameraTransform;
     public readonly int WallMask;
     public readonly int GroundMask;
-    
-    public PlayerSharedData(
-        UnitVelocity unitVelocity,
+    public readonly LineRenderer LineRenderer;
+    public readonly Transform SwingRoot;
+
+    public PlayerSharedData(UnitVelocity unitVelocity,
         MyCharacterController controller,
         PlayerPivot pivot,
         Transform player,
@@ -47,8 +48,10 @@ public class PlayerSharedData
         InputReader inputReader,
         Animator animator,
         Transform cameraTransform,
-        int wallMask, 
-        int groundMask)
+        int wallMask,
+        int groundMask,
+        LineRenderer lineRenderer, 
+        Transform swingRoot)
     {
         Velocity = unitVelocity;
         Controller = controller;
@@ -60,7 +63,9 @@ public class PlayerSharedData
         Animator = animator;
         WallMask = wallMask;
         GroundMask = groundMask;
-        
+        LineRenderer = lineRenderer;
+        SwingRoot = swingRoot;
+
         SetupVariables();
     }
     

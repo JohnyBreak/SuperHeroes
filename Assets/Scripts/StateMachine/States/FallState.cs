@@ -27,6 +27,12 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnUpdateState()
         {
+            if (_sharedData.InputReader.WebDetected)
+            {
+                SwitchState(_factory.Get(States.Swing));
+                return;
+            }
+
             HandleGravity();
         }
 

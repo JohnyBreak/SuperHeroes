@@ -64,7 +64,16 @@
                     "name": "Aim",
                     "type": "Button",
                     "id": "e440026d-b50a-4df1-ba03-48302673e522",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Web",
+                    "type": "Button",
+                    "id": "0d34af38-428b-4876-a6c1-1ffbd7923a65",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -312,7 +321,7 @@
                 {
                     "name": "",
                     "id": "2d594f48-6585-4401-95f6-10f27afb0d84",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
@@ -328,6 +337,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "440da16c-5082-470c-8d73-6da2f59fb28b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Web",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f159ac5-1926-4b91-b6e7-351833d9e379",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Web",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

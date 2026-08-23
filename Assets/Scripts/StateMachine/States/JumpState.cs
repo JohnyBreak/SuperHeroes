@@ -63,15 +63,24 @@ namespace UnitStateMachine.PlayerStates
             }
             
             _sharedData.Velocity.AddVelocity(desiredVelocity);
-            
-            if (!_groundSnapToggleOnce && _sharedData.Velocity.GetVelocity().y <= 0)
-            {
-                _sharedData.Controller.ShouldSnapToGround = true;
-                _groundSnapToggleOnce = true;
-                
-                _sharedData.Animator?.CrossFadeInFixedTime(_sharedData.FallHash, 0.1f);
-            }
 
+            if (_sharedData.Velocity.GetVelocity().y <= 0)
+            {
+                if (_sharedData.InputReader.WebDetected)
+                {
+                    SwitchState(_factory.Get(States.Swing));
+                    return;
+                }
+                
+                if (!_groundSnapToggleOnce)
+                {
+                    _sharedData.Controller.ShouldSnapToGround = true;
+                    _groundSnapToggleOnce = true;
+                
+                    _sharedData.Animator?.CrossFadeInFixedTime(_sharedData.FallHash, 0.1f);
+                }
+            }
+            
             HandleGravity();
         }
         
