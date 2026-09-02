@@ -24,6 +24,8 @@ namespace UnitStateMachine.PlayerStates
 
         protected override void OnEnterState()
         {
+
+            _sharedData.ModelT.localPosition = new Vector3(0, 0.1f, 0);
             _sharedData.Animator?.CrossFadeInFixedTime(_sharedData.WallCrawlingHash, 0.1f);
             
             _sharedData.Velocity.SetVelocity(Vector3.zero);
@@ -56,6 +58,7 @@ namespace UnitStateMachine.PlayerStates
             _sharedData.Pivot.enabled = false;
             _sharedData.InputReader.onCrouchActivated -= ReleaseWall;
             _sharedData.Controller.ShouldSnapToGround = true;
+            _sharedData.ModelT.localPosition = Vector3.zero;
         }
 
         protected override void CheckSwitchState()

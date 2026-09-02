@@ -59,7 +59,7 @@ namespace UnitStateMachine.PlayerStates
                 0.75f,
                 Time.deltaTime);
             
-            _sharedData.Velocity.AddVelocity(desiredVelocity);
+                //_sharedData.Velocity.AddVelocity(desiredVelocity);
         }
 
         protected override void ExitState()

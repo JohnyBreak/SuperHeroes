@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="a939b99d-0117-43e6-906f-a759e76b2f85" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SuperHeroes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/FallIdleState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/FallIdleState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/New Animator Controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/New Animator Controller.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/StateScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/StateScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/FallMoveState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/FallMoveState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/SwingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/SwingState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/WallState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/StateMachine/States/WallState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TutoSpider/ScanArmsAdvanced.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TutoSpider/ScanArmsAdvanced.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,15 +93,13 @@
       <option name="useMixedMode" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="6584">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="6584" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list>
-          <MonoRuntime />
-        </list>
+        <list />
       </option>
       <option name="selectedOptions">
         <list />
@@ -128,6 +128,9 @@
       <workItem from="1786818152067" duration="9397000" />
       <workItem from="1787325904696" duration="13717000" />
       <workItem from="1787515342028" duration="5435000" />
+      <workItem from="1787775393978" duration="63000" />
+      <workItem from="1787851675427" duration="455000" />
+      <workItem from="1788367863553" duration="9022000" />
     </task>
     <servers />
   </component>

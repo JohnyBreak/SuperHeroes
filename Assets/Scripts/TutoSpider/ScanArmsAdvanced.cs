@@ -54,7 +54,8 @@ public class ScanArmsAdvanced : Scan
             Vector3 pos = transform.position;
             Quaternion rot = transform.rotation * Quaternion.Euler(0, angle, 0);
 
-            for (int j = 0; j < armPoints && PhysicsExtension.ArcCast(pos, rot, arcAngle, arcRadius, arcResolution, arcLayer, out RaycastHit hit, _drawArcGizmo); j++)
+            for (int j = 0; j < armPoints && PhysicsExtension.ArcCast(pos, rot, arcAngle, arcRadius, 
+                     arcResolution, arcLayer, out RaycastHit hit, _drawArcGizmo); j++)
             {
                 float weight = weightByDist ? 1 - (float)j / armPoints : 1;
 
