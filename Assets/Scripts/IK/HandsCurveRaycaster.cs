@@ -1,9 +1,11 @@
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandsCurveRaycaster : MonoBehaviour
 {
-    [SerializeField] private Transform _handIKTarget;
+    [SerializeField] private Transform _modelT;
+    [SerializeField] private Transform _rightHandIKTarget;
+    [SerializeField] private Transform _leftHandIKTarget;
     [SerializeField] private bool _active;
     
     [SerializeField] Vector2 armLenghtCoef = new Vector2(1, 1);
@@ -16,16 +18,32 @@ public class HandsCurveRaycaster : MonoBehaviour
     [SerializeField] LayerMask arcLayer;
     [SerializeField] bool gizmoDrawPoint = true;
     [SerializeField] bool _drawArcGizmo = true;
-    
-    private void Scan(bool gizmo)
+
+    public void Enable()
     {
+        _active = true;
+    }
+    
+    public void Disable()
+    {
+        _active = false;
+    }
+
+    private void Scan(int sign, bool gizmo)
+    {
+        if (_modelT)
+        {
+            transform.up = _modelT.up;
+            transform.forward = _modelT.forward;
+        }
+        
         float rad = _angle * Mathf.Deg2Rad;
         float arcRadius = armLenght / armPoints;
         arcRadius *= Mathf.Sqrt(Mathf.Pow(Mathf.Cos(rad), 2) * armLenghtCoef.y +
                                 Mathf.Pow(Mathf.Sin(rad), 2) * armLenghtCoef.x);
         
         Vector3 pos = transform.position;
-        Quaternion rot = transform.rotation * Quaternion.Euler(0, _angle, 0);
+        Quaternion rot = transform.rotation * Quaternion.Euler(0, sign * _angle, 0);
         PhysicsExtension.ArcCast(pos, rot, arcAngle, arcRadius, arcResolution, arcLayer, out RaycastHit hit,
             gizmo && _drawArcGizmo);
         
@@ -35,8 +53,16 @@ public class HandsCurveRaycaster : MonoBehaviour
         if (gizmo && gizmoDrawPoint)
             Gizmos.DrawSphere(pos, 0.1f);
 
-        _handIKTarget.position = pos;
-        _handIKTarget.rotation = rot;
+        if (sign > 0)
+        {
+            _rightHandIKTarget.position = pos;
+            _rightHandIKTarget.rotation = rot;
+        }
+        else
+        {
+            _leftHandIKTarget.position = pos;
+            _leftHandIKTarget.rotation = rot;
+        }
     }
     
     private void OnDrawGizmos()
@@ -46,7 +72,8 @@ public class HandsCurveRaycaster : MonoBehaviour
             return;
         }
         
-        Scan(true);
+        Scan(1, true);
+        Scan(-1, true);
     }
 
     private void FixedUpdate()
@@ -56,7 +83,8 @@ public class HandsCurveRaycaster : MonoBehaviour
             return;
         }
         
-        Scan(false);
+        Scan(1, false);
+        Scan(-1, false);
     }
     // [SerializeField] private List<Transform> _handsIKTargets;
     // [SerializeField] private List<Transform> _handsBones;

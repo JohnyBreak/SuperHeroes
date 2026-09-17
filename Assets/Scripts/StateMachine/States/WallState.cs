@@ -33,6 +33,7 @@ namespace UnitStateMachine.PlayerStates
             _sharedData.InputReader.onCrouchActivated += ReleaseWall;
             SetSubState(_factory.Get(States.WallIdle));
             _sharedData.Controller.ShouldSnapToGround = false;
+            _sharedData.IkAgregator.Enable();
         }
 
         protected override void OnUpdateState()
@@ -55,6 +56,7 @@ namespace UnitStateMachine.PlayerStates
         
         protected override void ExitState()
         {
+            _sharedData.IkAgregator.Disable();
             _sharedData.Pivot.enabled = false;
             _sharedData.InputReader.onCrouchActivated -= ReleaseWall;
             _sharedData.Controller.ShouldSnapToGround = true;

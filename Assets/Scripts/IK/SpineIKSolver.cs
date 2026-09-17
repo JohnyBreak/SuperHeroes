@@ -16,6 +16,16 @@ public class SpineIKSolver : MonoBehaviour
     [SerializeField] bool gizmoDrawPoint = true;
     [SerializeField] bool _drawArcGizmo = true;
     
+    public void Enable()
+    {
+        _active = true;
+    }
+    
+    public void Disable()
+    {
+        _active = false;
+    }
+    
     private void Scan(bool gizmo)
     {
         float rad = _angle * Mathf.Deg2Rad;

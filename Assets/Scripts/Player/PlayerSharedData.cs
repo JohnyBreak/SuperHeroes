@@ -39,6 +39,7 @@ public class PlayerSharedData
     public readonly int GroundMask;
     public readonly LineRenderer LineRenderer;
     public readonly Transform SwingRoot;
+    public readonly SpineIKAgregator IkAgregator;
 
     public PlayerSharedData(UnitVelocity unitVelocity,
         MyCharacterController controller,
@@ -50,8 +51,9 @@ public class PlayerSharedData
         Transform cameraTransform,
         int wallMask,
         int groundMask,
-        LineRenderer lineRenderer, 
-        Transform swingRoot)
+        LineRenderer lineRenderer,
+        Transform swingRoot, 
+        SpineIKAgregator ikAgregator)
     {
         Velocity = unitVelocity;
         Controller = controller;
@@ -65,6 +67,7 @@ public class PlayerSharedData
         GroundMask = groundMask;
         LineRenderer = lineRenderer;
         SwingRoot = swingRoot;
+        IkAgregator = ikAgregator;
 
         SetupVariables();
     }

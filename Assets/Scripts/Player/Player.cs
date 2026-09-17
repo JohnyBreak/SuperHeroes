@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private LineRenderer _lineRenderer;
     [SerializeField] private Transform _swingRoot;
+    [SerializeField] private SpineIKAgregator _ikAgregator;
     
     private StateMachine _stateMachine;
     private StateFactory _stateFactory;
@@ -38,7 +39,8 @@ public class Player : MonoBehaviour
             _wallMask,
             _groundMask,
             _lineRenderer,
-            _swingRoot);
+            _swingRoot,
+            _ikAgregator);
 
         SwingState swing = new SwingState(
             _stateMachine, 
